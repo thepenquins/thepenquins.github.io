@@ -1,0 +1,152 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import GameCard from "../../components/GameCard.astro";
+import CtaPanel from "../../components/CtaPanel.astro";
+import { filterHref, games, genres, members, stats } from "../../data/games";
+
+const title = "Игры — Penquins Software";
+const description = `Каталог игр Penquins Software: ${stats.games} проектов и ${stats.genres} жанров. Скриншоты, управление и ссылки на сборки.`;
+---
+
+<BaseLayout title={title} description={description}>
+  <section class="page-hero">
+    <div class="container">
+      <p class="eyebrow">Каталог · {stats.games} игр</p>
+      <h1>Все игры</h1>
+      <p class="lead">
+        В каталоге — все проекты команды: эксперименты, короткие игры и работы с джемов.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="filters">
+        <div class="filters__row" role="group" aria-label="Фильтр по жанру">
+          <span class="filters__label">Жанр</span>
+          {
+            genres.map((genre) => (
+              <a
+                class="filter-chip"
+                href={filterHref("genre", genre)}
+                data-filter="genre"
+                data-value={genre}
+              >
+                {genre}
+              </a>
+            ))
+          }
+        </div>
+
+        <div class="filters__row" role="group" aria-label="Фильтр по автору">
+          <span class="filters__label">Автор</span>
+          {
+            members.map((member) => (
+              <a
+                class="filter-chip"
+                href={filterHref("author", member.name)}
+                data-filter="author"
+                data-value={member.name}
+              >
+                {member.name}
+              </a>
+            ))
+          }
+        </div>
+
+        <div class="filters__status" data-filter-status aria-live="polite" hidden>
+          <span data-filter-summary></span>
+          <a class="filter-chip filter-chip--reset" href="/games/" data-filter-reset>
+            Сбросить
+          </a>
+        </div>
+
+        <noscript>
+          <p class="filters__note">
+            Для фильтрации нужен JavaScript — ниже показаны все игры.
+          </p>
+        </noscript>
+      </div>
+
+      <div class="games-grid" data-games-grid>
+        {games.map((game, index) => <GameCard game={game} index={index} />)}
+      </div>
+
+      <p class="filters__empty" data-filter-empty hidden>
+        С таким фильтром игр нет. <a href="/games/">Показать все игры</a>.
+      </p>
+    </div>
+  </section>
+
+  <CtaPanel title="Что-то не запускается?" />
+
+  <script is:inline>
+  (() => {
+    const grid = document.querySelector("[data-games-grid]");
+    if (!grid) return;
+
+    const cards = Array.from(grid.querySelectorAll("[data-game]"));
+    const status = document.querySelector("[data-filter-status]");
+    const summary = document.querySelector("[data-filter-summary]");
+    const empty = document.querySelector("[data-filter-empty]");
+    const chips = Array.from(document.querySelectorAll("[data-filter]"));
+    const total = cards.length;
+
+    const apply = () => {
+      const params = new URLSearchParams(window.location.search);
+      const genre = params.get("genre");
+      const author = params.get("author");
+      let shown = 0;
+
+      cards.forEach((card) => {
+        const genreOk = !genre || card.dataset.genre === genre;
+        const authors = (card.dataset.authors || "").split("|");
+        const authorOk = !author || authors.indexOf(author) !== -1;
+        const visible = genreOk && authorOk;
+
+        card.hidden = !visible;
+        if (visible) shown += 1;
+      });
+
+      chips.forEach((chip) => {
+        const requested = chip.dataset.filter === "genre" ? genre : author;
+        const active = chip.dataset.value === requested;
+
+        chip.classList.toggle("is-active", active);
+        if (active) {
+          chip.setAttribute("aria-current", "true");
+        } else {
+          chip.removeAttribute("aria-current");
+        }
+      });
+
+      const active = Boolean(genre || author);
+
+      if (status) status.hidden = !active;
+
+      if (summary) {
+        const parts = [];
+        if (genre) parts.push("Жанр: " + genre);
+        if (author) parts.push("Автор: " + author);
+        summary.textContent = parts.join(" · ") + " — " + shown + " из " + total;
+      }
+
+      if (empty) empty.hidden = !active || shown > 0;
+    };
+
+    document.addEventListener("click", (event) => {
+      const link = event.target.closest("[data-filter], [data-filter-reset]");
+
+      if (!link || event.button !== 0) return;
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+
+      event.preventDefault();
+      window.history.pushState(null, "", link.href);
+      apply();
+    });
+
+    window.addEventListener("popstate", apply);
+    apply();
+  })();
+  </script>
+</BaseLayout>

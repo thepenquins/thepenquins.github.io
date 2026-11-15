@@ -1,0 +1,68 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import CtaPanel from "../components/CtaPanel.astro";
+import { members, stats } from "../data/games";
+
+const title = "О команде — Penquins Software";
+const description =
+  "Penquins Software — команда разработчиков игр из Антарктики. Небольшие игры и эксперименты в разных жанрах: от коротких джем-проектов до атмосферных историй.";
+---
+
+<BaseLayout title={title} description={description}>
+  <section class="page-hero">
+    <div class="container">
+      <p class="eyebrow">О команде</p>
+      <h1>Команда из Антарктики</h1>
+      <p class="lead">
+        Penquins Software — команда разработчиков игр. Так мы себя называем: где бы
+        мы ни оказались, делаем игры с холодной головой и тёплым интересом к необычным
+        идеям.
+      </p>
+    </div>
+  </section>
+
+  <section class="about-intro">
+    <div class="container about-intro__grid">
+      <div class="prose">
+        <p>
+          Мы делаем небольшие игры и эксперименты в разных жанрах: от коротких
+          джем-проектов до атмосферных историй. Часть проектов родилась на джемах,
+          часть — из желания проверить одну конкретную идею.
+        </p>
+        <p>
+          Объединяет нас желание доводить смелые идеи до играбельного результата.
+        </p>
+      </div>
+
+      <div class="about-facts" aria-label="Команда в цифрах">
+        <div><strong>{stats.games}</strong><span>игр в каталоге</span></div>
+        <div><strong>{stats.genres}</strong><span>жанров</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="team" aria-labelledby="team-heading">
+    <div class="container">
+      <p class="eyebrow">Люди</p>
+      <h2 id="team-heading" class="team-title">Участники проектов</h2>
+      <ul class="members">
+        {members.map((member) => (
+          <li>
+            <a
+              class="member-chip"
+              href={member.url}
+              target="_blank"
+              rel="noopener"
+              title={`${member.name} на itch.io`}
+              aria-label={`${member.name} на itch.io`}
+            >
+              {member.name}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <CtaPanel title="Следите за новыми играми" />
+</BaseLayout>

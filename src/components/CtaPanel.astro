@@ -1,0 +1,38 @@
+---
+interface Props {
+  title?: string;
+  text?: string;
+}
+
+const { title = "Новые игры — на itch.io", text } = Astro.props;
+---
+
+<section class="section section--tight">
+  <div class="container">
+    <div class="cta-panel">
+      <div>
+        <p class="eyebrow">Следить за командой</p>
+        <h2>{title}</h2>
+        {text && <p>{text}</p>}
+      </div>
+      <div class="cta-panel__actions">
+        <a
+          class="btn btn--primary"
+          href="https://penquins.itch.io"
+          target="_blank"
+          rel="noopener"
+        >
+          Открыть itch.io <span class="btn__arrow" aria-hidden="true">↗</span>
+        </a>
+        <a
+          class="btn btn--ghost"
+          href="https://vk.com/penquins_software"
+          target="_blank"
+          rel="noopener"
+        >
+          VK <span class="btn__arrow" aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,24 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="404 — Penquins Software"
+  description="Страница не найдена. Возможно, её закопал Лопатель."
+>
+  <section class="error-page container">
+    <p class="eyebrow">Ошибка 404</p>
+    <div class="error-code" aria-hidden="true">404</div>
+    <h1>Страница ушла к центру Земли</h1>
+    <p class="lead">
+      Возможно, её закопал Лопатель. Вернитесь на поверхность — там есть игры
+      и котики.
+    </p>
+    <div class="hero__actions">
+      <a class="btn btn--primary" href="/">
+        На главную <span class="btn__arrow" aria-hidden="true">→</span>
+      </a>
+      <a class="btn btn--ghost" href="/games/">Все игры</a>
+    </div>
+  </section>
+</BaseLayout>

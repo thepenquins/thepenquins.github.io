@@ -1,0 +1,206 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import GameCard from "../../components/GameCard.astro";
+import { games, getOtherGames, getGameCredits } from "../../data/games";
+import type { Game } from "../../data/games";
+
+export function getStaticPaths() {
+  return games.map((game) => ({
+    params: { slug: game.slug },
+    props: { game },
+  }));
+}
+
+interface Props {
+  game: Game;
+}
+
+const { game } = Astro.props;
+const credits = getGameCredits(game);
+const otherGames = getOtherGames(game.slug, 3);
+const primaryHref = game.playUrl ?? game.itchUrl;
+const isExternal = !game.playUrl;
+const primaryLabel = game.playUrl ? "Играть здесь" : "itch.io";
+
+const canonical = new URL(`/games/${game.slug}/`, Astro.site);
+const cover = new URL(game.cover, Astro.site);
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  name: game.title,
+  description: game.description.join(" "),
+  genre: game.genre,
+  url: canonical.href,
+  image: cover.href,
+  applicationCategory: "Game",
+  operatingSystem: game.platforms.join(", "),
+  author: {
+    "@type": "Organization",
+    name: "Penquins Software",
+    url: Astro.site?.href,
+  },
+};
+---
+
+<BaseLayout
+  title={`${game.title} — Penquins Software`}
+  description={game.description[0]}
+  image={`/og/${game.slug}.jpg`}
+  imageAlt={`Обложка игры «${game.title}» — Penquins Software`}
+  type="article"
+>
+  <article class="game-page">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Хлебные крошки">
+        <a href="/games/">Игры</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">{game.title}</span>
+      </nav>
+
+      <div class="game-hero">
+        <div class="game-hero__cover">
+          <img
+            src={game.cover}
+            alt={`Обложка игры «${game.title}»`}
+            width="900"
+            height="714"
+            loading="eager"
+          />
+        </div>
+
+        <div class="game-hero__info">
+          <p class="eyebrow">
+            {game.genre}{game.browser && " · в браузере"}
+          </p>
+          <h1 class="game-title">{game.title}</h1>
+          <p class="game-tagline">{game.tagline}</p>
+
+          <div class="game-actions">
+            <a
+              class="btn btn--primary"
+              href={primaryHref}
+              target={isExternal ? "_blank" : undefined}
+              rel={isExternal ? "noopener" : undefined}
+            >
+              {primaryLabel}
+              <span class="btn__arrow" aria-hidden="true">{isExternal ? "↗" : "→"}</span>
+            </a>
+            {
+              game.playUrl && (
+                <a
+                  class="btn btn--ghost"
+                  href={game.itchUrl}
+                  target="_blank"
+                  rel="noopener"
+                >
+                  Страница на itch.io <span class="btn__arrow" aria-hidden="true">↗</span>
+                </a>
+              )
+            }
+          </div>
+
+          <dl class="game-meta">
+            <div>
+              <dt>Жанр</dt>
+              <dd>{game.genre}</dd>
+            </div>
+            <div>
+              <dt>Платформы</dt>
+              <dd>{game.platforms.join(", ")}</dd>
+            </div>
+            {
+              game.jam && (
+                <div>
+                  <dt>Джем</dt>
+                  <dd>{game.jam}</dd>
+                </div>
+              )
+            }
+            <div>
+              <dt>Авторы</dt>
+              <dd>{credits.map((person) => person.name).join(", ")}</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+
+      <section class="game-section" aria-labelledby="about-game">
+        <h2 class="game-section__label" id="about-game">Об игре</h2>
+        <div class="game-section__body">
+          <div class="prose">
+            {game.description.map((paragraph) => <p>{paragraph}</p>)}
+          </div>
+          {
+            game.controls && (
+              <p class="controls-box">
+                <span class="sr-only">Управление: </span>
+                {game.controls}
+              </p>
+            )
+          }
+        </div>
+      </section>
+
+      {
+        game.screenshots.length > 0 && (
+          <section class="game-section" aria-labelledby="screenshots">
+            <h2 class="game-section__label" id="screenshots">Скриншоты</h2>
+            <div class="game-section__body">
+              <div class="gallery">
+                {game.screenshots.map((screenshot) => (
+                  <figure>
+                    <img
+                      src={screenshot.src}
+                      alt={screenshot.alt}
+                      width="1400"
+                      height="788"
+                      loading="lazy"
+                    />
+                  </figure>
+                ))}
+              </div>
+            </div>
+          </section>
+        )
+      }
+
+      <section class="game-section" aria-labelledby="authors">
+        <h2 class="game-section__label" id="authors">Над игрой работали</h2>
+        <div class="game-section__body">
+          <div class="game-credits">
+            {credits.map((person) => (
+              <a
+                class="member-chip"
+                href={person.url}
+                target="_blank"
+                rel="noopener"
+                title={`${person.name} на itch.io`}
+                aria-label={`${person.name} на itch.io`}
+              >
+                {person.name}
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="more-games">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Дальше</p>
+            <h2 id="more-games">Другие игры</h2>
+          </div>
+          <a class="link-more" href="/games/">
+            Весь каталог <span aria-hidden="true">→</span>
+          </a>
+        </div>
+        <div class="games-grid">
+          {otherGames.map((other, index) => <GameCard game={other} index={index} />)}
+        </div>
+      </section>
+    </div>
+  </article>
+
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+</BaseLayout>

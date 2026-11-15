@@ -1,0 +1,36 @@
+---
+const path = Astro.url.pathname;
+
+const links = [
+  { href: "/games/", label: "Игры" },
+  { href: "/about/", label: "О команде" },
+];
+
+const isActive = (href: string) => path.startsWith(href);
+---
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="/" aria-label="Penquins Software — на главную">
+      <img src="/logo.png" alt="Penquins Software" width="1000" height="400" />
+    </a>
+
+    <nav class="nav" aria-label="Основная навигация">
+      {
+        links.map((link) => (
+          <a href={link.href} aria-current={isActive(link.href) ? "page" : undefined}>
+            {link.label}
+          </a>
+        ))
+      }
+      <a
+        class="nav-cta"
+        href="https://penquins.itch.io"
+        target="_blank"
+        rel="noopener"
+      >
+        itch.io <span class="btn__arrow" aria-hidden="true">↗</span>
+      </a>
+    </nav>
+  </div>
+</header>

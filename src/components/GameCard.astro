@@ -1,0 +1,50 @@
+---
+import type { Game } from "../data/games";
+
+interface Props {
+  game: Game;
+  index?: number;
+}
+
+const { game, index = 0 } = Astro.props;
+---
+
+<a
+  class="game-card"
+  href={`/games/${game.slug}/`}
+  style={`--i:${index}`}
+  data-game
+  data-genre={game.genre}
+  data-authors={game.credits.join("|")}
+>
+  <div class="game-card__media">
+    <img
+      src={game.cover}
+      alt={`Обложка игры «${game.title}»`}
+      width="900"
+      height="714"
+      loading={index < 3 ? "eager" : "lazy"}
+    />
+    {
+      game.browser && (
+        <span class="game-card__badge">
+          <span class="dot" aria-hidden="true"></span>
+          В браузере
+        </span>
+      )
+    }
+  </div>
+
+  <div class="game-card__body">
+    <div class="game-card__meta">
+      <span>{game.genre}</span>
+      <span>{game.platforms.join(" / ")}</span>
+    </div>
+    <h3>{game.title}</h3>
+    <p>{game.tagline}</p>
+    <div class="game-card__foot">
+      <span>Открыть игру</span>
+      <span aria-hidden="true">→</span>
+    </div>
+  </div>
+</a>

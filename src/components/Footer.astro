@@ -1,0 +1,40 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img src="/logo.png" alt="Penquins Software" width="1000" height="400" />
+        <p>
+          Команда разработчиков игр из Антарктики. Делаем небольшие игры
+          и эксперименты в разных жанрах.
+        </p>
+      </div>
+
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h3>Сайт</h3>
+          <a href="/">Главная</a>
+          <a href="/games/">Игры</a>
+          <a href="/about/">О команде</a>
+        </div>
+        <div class="footer-col">
+          <h3>Мы в сети</h3>
+          <a href="https://penquins.itch.io" target="_blank" rel="noopener">
+            itch.io ↗
+          </a>
+          <a href="https://vk.com/penquins_software" target="_blank" rel="noopener">
+            VK ↗
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© {year} Penquins Software</span>
+      <span>Made with Astro</span>
+    </div>
+  </div>
+</footer>

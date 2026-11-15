@@ -1,0 +1,36 @@
+---
+import { filterHref } from "../data/games";
+
+interface Props {
+  items: string[];
+  type: "genre" | "author";
+  reverse?: boolean;
+  duration?: string;
+}
+
+const { items, type, reverse = false, duration = "44s" } = Astro.props;
+const groups = 8;
+---
+
+<div class="marquee" aria-hidden="true">
+  <div
+    class:list={["marquee__track", reverse && "marquee__track--reverse"]}
+    data-marquee-track
+    style={`--marquee-duration:${duration}`}
+  >
+    {
+      Array.from({ length: groups }).map(() => (
+        <div class="marquee__group" data-marquee-group>
+          {items.map((item) => (
+            <span class="marquee__item">
+              <a class="strip-chip" href={filterHref(type, item)} tabindex="-1">
+                {item}
+              </a>
+              <i aria-hidden="true">✦</i>
+            </span>
+          ))}
+        </div>
+      ))
+    }
+  </div>
+</div>

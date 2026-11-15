@@ -1,0 +1,149 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import GameCard from "../components/GameCard.astro";
+import CtaPanel from "../components/CtaPanel.astro";
+import MarqueeStrip from "../components/MarqueeStrip.astro";
+import { featuredGames, games, genres, stats } from "../data/games";
+
+const collageGames = featuredGames.slice(0, 3);
+const covers = games.map((game) => game.cover);
+---
+
+<BaseLayout>
+  <section class="hero">
+    <div class="container hero__inner">
+      <div class="hero__copy">
+        <p class="eyebrow">Команда разработчиков игр</p>
+        <h1 class="hero__title">Penquins <span class="ice">Software</span></h1>
+        <p class="lead">
+          Небольшие игры и эксперименты в разных жанрах. Мы делаем проекты,
+          в которых двор-колодец может оказаться глубже, чем кажется.
+        </p>
+        <div class="hero__actions">
+          <a class="btn btn--primary" href="/games/">
+            Смотреть игры <span class="btn__arrow" aria-hidden="true">→</span>
+          </a>
+          <a
+            class="btn btn--ghost"
+            href="https://penquins.itch.io"
+            target="_blank"
+            rel="noopener"
+          >
+            Мы на itch.io <span class="btn__arrow" aria-hidden="true">↗</span>
+          </a>
+        </div>
+        <ul class="hero__meta">
+          <li>{stats.games} игр</li>
+          <li>{stats.genres} жанров</li>
+        </ul>
+      </div>
+
+      <div class="collage" aria-hidden="true" data-hero-games={JSON.stringify(covers)}>
+        {
+          collageGames.map((game, index) => (
+            <div class={`collage__card collage__card--${index + 1}`}>
+              <img src={game.cover} alt="" width="900" height="714" loading="eager" />
+            </div>
+          ))
+        }
+        <img class="collage__mascot" src="/penguin.png" alt="" width="512" height="512" />
+        <span class="collage__badge">
+          <span class="dot"></span>
+          {stats.games} игр · {stats.genres} жанров
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <MarqueeStrip items={genres} type="genre" />
+
+  <script is:inline>
+    (() => {
+      const shuffle = (list) => {
+        for (let i = list.length - 1; i > 0; i -= 1) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [list[i], list[j]] = [list[j], list[i]];
+        }
+        return list;
+      };
+
+      document.querySelectorAll("[data-marquee-track]").forEach((track) => {
+        const groups = Array.from(track.querySelectorAll("[data-marquee-group]"));
+        if (!groups.length) return;
+
+        const order = shuffle(Array.from(groups[0].children).map((_, index) => index));
+        groups.forEach((group) => {
+          const items = Array.from(group.children);
+          order.forEach((index) => group.appendChild(items[index]));
+        });
+      });
+
+      const collage = document.querySelector(".collage[data-hero-games]");
+      if (collage) {
+        const pool = JSON.parse(collage.getAttribute("data-hero-games") || "[]");
+        const images = Array.from(collage.querySelectorAll(".collage__card img"));
+
+        if (pool.length >= images.length) {
+          shuffle(pool);
+          images.forEach((image, index) => {
+            image.src = pool[index];
+          });
+        }
+      }
+    })();
+  </script>
+
+  <section class="section" aria-labelledby="featured-heading">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">01 / Избранное</p>
+          <h2 id="featured-heading">С чего начать</h2>
+        </div>
+        <a class="link-more" href="/games/">
+          Все {stats.games} игр <span aria-hidden="true">→</span>
+        </a>
+      </div>
+
+      <div class="games-grid">
+        {featuredGames.map((game, index) => <GameCard game={game} index={index} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="about-heading">
+    <div class="container">
+      <div class="about-teaser">
+        <div>
+          <p class="eyebrow">02 / Команда</p>
+          <h2 id="about-heading">Небольшая команда. Очень разные игры.</h2>
+          <p>
+            Penquins Software делает небольшие игры и эксперименты в разных жанрах.
+          </p>
+
+          <div class="facts">
+            <div class="fact">
+              <strong>{stats.games}</strong>
+              <span>выпущенных игр</span>
+            </div>
+            <div class="fact">
+              <strong>{stats.genres}</strong>
+              <span>жанров в каталоге</span>
+            </div>
+          </div>
+
+          <a class="btn btn--ghost about-teaser__link" href="/about/">
+            О команде <span class="btn__arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+
+        <div class="about-teaser__brand">
+          <img src="/logo.png" alt="Penquins Software" width="1000" height="400" loading="lazy" />
+          <span>Game development team<br />from Antarctica</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CtaPanel />
+</BaseLayout>

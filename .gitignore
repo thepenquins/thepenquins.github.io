@@ -1,0 +1,16 @@
+# Зависимости
+node_modules/
+
+# Сборка
+dist/
+.astro/
+
+# Кэш и системное
+.DS_Store
+Thumbs.db
+*.log
+
+# Локальные переменные
+.env
+.env.*
+!.env.example
