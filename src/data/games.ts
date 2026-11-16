@@ -127,6 +127,7 @@ export const games: Game[] = [
     platforms: ["Браузер"],
     browser: true,
     itchUrl: "https://penquins.itch.io/shigger",
+    playUrl: "/games/shigger/play/",
     cover: "/covers/shigger.webp",
     screenshots: [],
     credits: ["Rankel", "BACR", "lex4nder", "Aki_ona", "Oz Fox"],
