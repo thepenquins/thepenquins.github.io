@@ -276,18 +276,6 @@ h3 {
   background: rgba(143, 227, 255, 0.1);
 }
 
-.nav .nav-cta {
-  margin-left: 6px;
-  background: var(--ice);
-  color: #05121a;
-  font-weight: 600;
-}
-
-.nav .nav-cta:hover {
-  background: var(--ice-bright);
-  color: #05121a;
-}
-
 /* ---------- Type helpers ---------- */
 
 .eyebrow {
@@ -1851,15 +1839,6 @@ body.is-lightbox-open {
   .nav a {
     padding: 7px 7px;
     font-size: 12.5px;
-  }
-
-  .nav .nav-cta {
-    margin-left: 2px;
-    padding-inline: 10px;
-  }
-
-  .nav .nav-cta .btn__arrow {
-    display: none;
   }
 
   .hero__title {
