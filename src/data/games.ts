@@ -17,7 +17,7 @@ export type Game = {
   credits: string[];
   jam?: string;
   controls?: string;
-  featured?: boolean;
+  vkPlayUrl?: string;
   /**
    * Локальная веб-сборка, если она лежит в public/games/<slug>/.
    * Например: "/games/advorkolodets/play/"
@@ -30,7 +30,30 @@ const shot = (slug: string, n: number, title: string): Screenshot => ({
   alt: `Скриншот из игры «${title}»`,
 });
 
+/**
+ * Порядок в массиве = порядок в каталоге: сверху новые игры,
+ * как в профиле penquins.itch.io. Новую игру добавляйте в начало.
+ */
 export const games: Game[] = [
+  {
+    slug: "advorkolodets",
+    title: "A DVOR-KOLODETS",
+    tagline: "Каждый двор-колодец имеет двойное дно",
+    description: [
+      "Семья переезжает в дом с внутренним двором. Но в квартире всё чаще что-то меняется, а сосед напротив слишком внимательно смотрит из окна. Каждый двор-колодец имеет двойное дно.",
+      "Мистическая визуальная новелла о тесном дворе, чужих взглядах и неживом.",
+    ],
+    genre: "Визуальная новелла",
+    platforms: ["Windows"],
+    itchUrl: "https://penquins.itch.io/advorkolodets",
+    cover: "/covers/advorkolodets.webp",
+    screenshots: [
+      shot("advorkolodets", 1, "A DVOR-KOLODETS"),
+      shot("advorkolodets", 2, "A DVOR-KOLODETS"),
+      shot("advorkolodets", 3, "A DVOR-KOLODETS"),
+    ],
+    credits: ["Rankel", "lex4nder", "danya_balakhnin", "LehanFox", "Oz Fox"],
+  },
   {
     slug: "piece-of-knight",
     title: "Piece of Knight",
@@ -51,7 +74,6 @@ export const games: Game[] = [
     credits: ["lex4nder", "Oz Fox", "BACR", "Rankel"],
     jam: "Siberian Game Jam · ноябрь 2025",
     controls: "WASD — движение · ЛКМ / ПКМ — атака · Q / E / R — подбор «предметов»",
-    featured: true,
   },
   {
     slug: "absolute-brain-rot",
@@ -74,41 +96,22 @@ export const games: Game[] = [
     jam: "Mystery Game Jam 2025",
   },
   {
-    slug: "advorkolodets",
-    title: "A DVOR-KOLODETS",
-    tagline: "Каждый двор-колодец имеет двойное дно",
-    description: [
-      "Семья переезжает в дом с внутренним двором. Но в квартире всё чаще что-то меняется, а сосед напротив слишком внимательно смотрит из окна. Каждый двор-колодец имеет двойное дно.",
-      "Мистическая визуальная новелла о тесном дворе, чужих взглядах и неживом.",
-    ],
-    genre: "Визуальная новелла",
-    platforms: ["Windows"],
-    itchUrl: "https://penquins.itch.io/advorkolodets",
-    cover: "/covers/advorkolodets.webp",
-    screenshots: [
-      shot("advorkolodets", 1, "A DVOR-KOLODETS"),
-      shot("advorkolodets", 2, "A DVOR-KOLODETS"),
-      shot("advorkolodets", 3, "A DVOR-KOLODETS"),
-    ],
-    credits: ["Rankel", "lex4nder", "danya_balakhnin", "LehanFox", "Oz Fox"],
-    featured: true,
-  },
-  {
     slug: "nibras-play-deluxe",
-    title: "Nibras's Play — Deluxe",
-    tagline: "Play is Nibras. Now with two extra stories!",
+    title: "Театр Нибраса",
+    tagline: "Вся жизнь — театр, а театр — Нибраса!",
     description: [
       "В провинциальном театре происходит череда загадочных происшествий, и «консультант по изгнанию» берётся снять проклятие. Прямо на его глазах случается убийство — и герой уверен, что всему есть рациональное объяснение. Осталось найти виновного.",
-      "Deluxe-версия — две разные трактовки одной истории и бонус.",
+      "Версия с двумя разными трактовками одной истории и бонусом.",
     ],
     genre: "Визуальная новелла",
     platforms: ["Windows"],
     itchUrl: "https://penquins.itch.io/nibras-play-deluxe",
+    vkPlayUrl: "https://vkplay.ru/play/game/nibras-play-39828",
     cover: "/covers/nibras-play-deluxe.webp",
     screenshots: [
-      shot("nibras-play-deluxe", 1, "Nibras's Play — Deluxe"),
-      shot("nibras-play-deluxe", 2, "Nibras's Play — Deluxe"),
-      shot("nibras-play-deluxe", 3, "Nibras's Play — Deluxe"),
+      shot("nibras-play-deluxe", 1, "Театр Нибраса"),
+      shot("nibras-play-deluxe", 2, "Театр Нибраса"),
+      shot("nibras-play-deluxe", 3, "Театр Нибраса"),
     ],
     credits: ["lex4nder", "Rankel", "BACR", "Oz Fox"],
   },
@@ -128,7 +131,6 @@ export const games: Game[] = [
     screenshots: [],
     credits: ["Rankel", "BACR", "lex4nder", "Aki_ona", "Oz Fox"],
     controls: "A / D или ← / → — движение · S или ↓ — копать · не забывайте кормить котиков",
-    featured: true,
   },
   {
     slug: "bikerunner",
@@ -210,7 +212,15 @@ export const games: Game[] = [
   },
 ];
 
-export const featuredGames = games.filter((game) => game.featured);
+const featuredSlugs = ["nibras-play-deluxe", "shigger", "advorkolodets"];
+
+export const featuredGames = featuredSlugs.map((slug) => {
+  const game = games.find((item) => item.slug === slug);
+  if (!game) {
+    throw new Error(`Не найдена игра для главной: ${slug}`);
+  }
+  return game;
+});
 
 export const genres = [...new Set(games.map((game) => game.genre))];
 

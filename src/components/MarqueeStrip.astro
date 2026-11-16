@@ -4,20 +4,14 @@ import { filterHref } from "../data/games";
 interface Props {
   items: string[];
   type: "genre" | "author";
-  reverse?: boolean;
-  duration?: string;
 }
 
-const { items, type, reverse = false, duration = "44s" } = Astro.props;
+const { items, type } = Astro.props;
 const groups = 8;
 ---
 
 <div class="marquee" aria-hidden="true">
-  <div
-    class:list={["marquee__track", reverse && "marquee__track--reverse"]}
-    data-marquee-track
-    style={`--marquee-duration:${duration}`}
-  >
+  <div class="marquee__track" data-marquee-track>
     {
       Array.from({ length: groups }).map(() => (
         <div class="marquee__group" data-marquee-group>

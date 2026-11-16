@@ -1,7 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import GameCard from "../components/GameCard.astro";
-import CtaPanel from "../components/CtaPanel.astro";
 import MarqueeStrip from "../components/MarqueeStrip.astro";
 import { featuredGames, games, genres, stats } from "../data/games";
 
@@ -16,8 +15,8 @@ const covers = games.map((game) => game.cover);
         <p class="eyebrow">Команда разработчиков игр</p>
         <h1 class="hero__title">Penquins <span class="ice">Software</span></h1>
         <p class="lead">
-          Небольшие игры и эксперименты в разных жанрах. Мы делаем проекты,
-          в которых двор-колодец может оказаться глубже, чем кажется.
+          Игры, в которых двор-колодец может оказаться глубже, чем кажется:
+          короткие, атмосферные, иногда абсурдные — но всегда с идеей.
         </p>
         <div class="hero__actions">
           <a class="btn btn--primary" href="/games/">
@@ -29,7 +28,15 @@ const covers = games.map((game) => game.cover);
             target="_blank"
             rel="noopener"
           >
-            Мы на itch.io <span class="btn__arrow" aria-hidden="true">↗</span>
+            itch.io <span class="btn__arrow" aria-hidden="true">↗</span>
+          </a>
+          <a
+            class="btn btn--ghost"
+            href="https://vk.com/penquins_software"
+            target="_blank"
+            rel="noopener"
+          >
+            VK <span class="btn__arrow" aria-hidden="true">↗</span>
           </a>
         </div>
         <ul class="hero__meta">
@@ -144,6 +151,4 @@ const covers = games.map((game) => game.cover);
       </div>
     </div>
   </section>
-
-  <CtaPanel />
 </BaseLayout>

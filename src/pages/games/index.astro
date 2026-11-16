@@ -1,7 +1,6 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import GameCard from "../../components/GameCard.astro";
-import CtaPanel from "../../components/CtaPanel.astro";
 import { filterHref, games, genres, members, stats } from "../../data/games";
 
 const title = "Игры — Penquins Software";
@@ -77,8 +76,6 @@ const description = `Каталог игр Penquins Software: ${stats.games} п�
       </p>
     </div>
   </section>
-
-  <CtaPanel title="Что-то не запускается?" />
 
   <script is:inline>
   (() => {

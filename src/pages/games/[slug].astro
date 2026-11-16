@@ -87,6 +87,18 @@ const jsonLd = {
               <span class="btn__arrow" aria-hidden="true">{isExternal ? "↗" : "→"}</span>
             </a>
             {
+              game.vkPlayUrl && (
+                <a
+                  class="btn btn--ghost"
+                  href={game.vkPlayUrl}
+                  target="_blank"
+                  rel="noopener"
+                >
+                  VK Play <span class="btn__arrow" aria-hidden="true">↗</span>
+                </a>
+              )
+            }
+            {
               game.playUrl && (
                 <a
                   class="btn btn--ghost"
@@ -117,9 +129,21 @@ const jsonLd = {
                 </div>
               )
             }
-            <div>
+            <div class="game-meta__authors">
               <dt>Авторы</dt>
-              <dd>{credits.map((person) => person.name).join(", ")}</dd>
+              <dd>
+                {credits.map((person) => (
+                  <a
+                    class="credit-chip"
+                    href={person.url}
+                    target="_blank"
+                    rel="noopener"
+                    title={`${person.name} на itch.io`}
+                  >
+                    {person.name}
+                  </a>
+                ))}
+              </dd>
             </div>
           </dl>
         </div>
@@ -164,26 +188,6 @@ const jsonLd = {
           </section>
         )
       }
-
-      <section class="game-section" aria-labelledby="authors">
-        <h2 class="game-section__label" id="authors">Над игрой работали</h2>
-        <div class="game-section__body">
-          <div class="game-credits">
-            {credits.map((person) => (
-              <a
-                class="member-chip"
-                href={person.url}
-                target="_blank"
-                rel="noopener"
-                title={`${person.name} на itch.io`}
-                aria-label={`${person.name} на itch.io`}
-              >
-                {person.name}
-              </a>
-            ))}
-          </div>
-        </div>
-      </section>
 
       <section class="section" aria-labelledby="more-games">
         <div class="section-head">
