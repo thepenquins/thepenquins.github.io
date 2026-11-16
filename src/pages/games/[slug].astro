@@ -172,18 +172,79 @@ const jsonLd = {
             <h2 class="game-section__label" id="screenshots">Скриншоты</h2>
             <div class="game-section__body">
               <div class="gallery">
-                {game.screenshots.map((screenshot) => (
+                {game.screenshots.map((screenshot, index) => (
                   <figure>
-                    <img
-                      src={screenshot.src}
-                      alt={screenshot.alt}
-                      width="1400"
-                      height="788"
-                      loading="lazy"
-                    />
+                    <a
+                      class="gallery__link"
+                      href={screenshot.src}
+                      data-lightbox
+                      aria-label={`Открыть скриншот ${index + 1} в полном размере`}
+                    >
+                      <img
+                        src={screenshot.src}
+                        alt={screenshot.alt}
+                        width="1400"
+                        height="788"
+                        loading="lazy"
+                      />
+                      <span class="gallery__zoom" aria-hidden="true">⤢</span>
+                    </a>
                   </figure>
                 ))}
               </div>
+
+              <dialog class="lightbox" data-lightbox-dialog aria-label="Просмотр скриншотов">
+                <div class="lightbox__bar">
+                  <span class="lightbox__counter" data-lightbox-counter></span>
+                  <a
+                    class="lightbox__source"
+                    data-lightbox-source
+                    href={game.screenshots[0].src}
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    Открыть оригинал <span aria-hidden="true">↗</span>
+                  </a>
+                  <button
+                    class="lightbox__close"
+                    type="button"
+                    data-lightbox-close
+                    aria-label="Закрыть просмотр"
+                  >
+                    ✕
+                  </button>
+                </div>
+                <div class="lightbox__stage">
+                  <img
+                    class="lightbox__img"
+                    data-lightbox-img
+                    src={game.screenshots[0].src}
+                    alt={game.screenshots[0].alt}
+                  />
+                  {
+                    game.screenshots.length > 1 && (
+                      <>
+                        <button
+                          class="lightbox__nav lightbox__nav--prev"
+                          type="button"
+                          data-lightbox-prev
+                          aria-label="Предыдущий скриншот"
+                        >
+                          ←
+                        </button>
+                        <button
+                          class="lightbox__nav lightbox__nav--next"
+                          type="button"
+                          data-lightbox-next
+                          aria-label="Следующий скриншот"
+                        >
+                          →
+                        </button>
+                      </>
+                    )
+                  }
+                </div>
+              </dialog>
             </div>
           </section>
         )
@@ -207,4 +268,81 @@ const jsonLd = {
   </article>
 
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+  <script>
+    const dialog = document.querySelector<HTMLDialogElement>("[data-lightbox-dialog]");
+
+    if (dialog) {
+      const links = Array.from(document.querySelectorAll<HTMLAnchorElement>("[data-lightbox]"));
+      const image = dialog.querySelector<HTMLImageElement>("[data-lightbox-img]");
+      const counter = dialog.querySelector<HTMLElement>("[data-lightbox-counter]");
+      const source = dialog.querySelector<HTMLAnchorElement>("[data-lightbox-source]");
+      const stage = dialog.querySelector<HTMLElement>(".lightbox__stage");
+      const closeButton = dialog.querySelector<HTMLButtonElement>("[data-lightbox-close]");
+      const prevButton = dialog.querySelector<HTMLButtonElement>("[data-lightbox-prev]");
+      const nextButton = dialog.querySelector<HTMLButtonElement>("[data-lightbox-next]");
+      let current = 0;
+
+      const show = (index: number) => {
+        current = (index + links.length) % links.length;
+        const link = links[current];
+        const thumbnail = link.querySelector("img");
+
+        if (image && thumbnail) {
+          image.src = link.href;
+          image.alt = thumbnail.alt;
+        }
+        if (counter) {
+          counter.textContent = `${current + 1} / ${links.length}`;
+        }
+        if (source) {
+          source.href = link.href;
+        }
+      };
+
+      links.forEach((link, index) => {
+        link.addEventListener("click", (event) => {
+          if (
+            event.button !== 0 ||
+            event.metaKey ||
+            event.ctrlKey ||
+            event.shiftKey ||
+            event.altKey
+          ) {
+            return;
+          }
+
+          event.preventDefault();
+          show(index);
+          dialog.showModal();
+          document.body.classList.add("is-lightbox-open");
+        });
+      });
+
+      closeButton?.addEventListener("click", () => dialog.close());
+      prevButton?.addEventListener("click", () => show(current - 1));
+      nextButton?.addEventListener("click", () => show(current + 1));
+
+      stage?.addEventListener("click", (event) => {
+        if (event.target === stage) {
+          dialog.close();
+        }
+      });
+
+      dialog.addEventListener("keydown", (event) => {
+        if (event.key === "ArrowLeft") {
+          event.preventDefault();
+          show(current - 1);
+        }
+        if (event.key === "ArrowRight") {
+          event.preventDefault();
+          show(current + 1);
+        }
+      });
+
+      dialog.addEventListener("close", () => {
+        document.body.classList.remove("is-lightbox-open");
+      });
+    }
+  </script>
 </BaseLayout>
