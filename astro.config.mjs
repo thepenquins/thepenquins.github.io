@@ -1,8 +1,9 @@
 import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
 
-// Домен можно переопределить при сборке: SITE_URL=https://example.com npm run build
-const site = process.env.SITE_URL || "https://penquins.software";
+// Адрес сайта по умолчанию. Свой домен можно задать при сборке:
+// SITE_URL=https://penquins.software npm run build
+const site = process.env.SITE_URL || "https://thepenquins.github.io";
 
 export default defineConfig({
   site,

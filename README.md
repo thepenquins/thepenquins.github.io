@@ -100,7 +100,7 @@ playUrl: "/games/<slug>/play/",
 
 ## Деплой на GitHub Pages
 
-Сайт рассчитан на **корень домена**: `https://<account>.github.io/` или собственный домен. Поэтому репозиторий должен называться `<account>.github.io` (например, `penquins.github.io`), либо нужно подключить custom domain.
+Сайт рассчитан на **корень домена**: `https://<account>.github.io/` или собственный домен. Поэтому репозиторий должен называться `<account>.github.io` — сейчас это `thepenquins.github.io`, сайт живёт на `https://thepenquins.github.io/`.
 
 1. Создайте репозиторий `<account>.github.io` и запушьте туда проект.
 2. В **Settings → Pages → Build and deployment** выберите **GitHub Actions**.
@@ -114,9 +114,9 @@ playUrl: "/games/<slug>/play/",
 1. В **Settings → Pages → Custom domain** укажите `penquins.software`.
 2. У регистратора добавьте DNS-записи:
    - `A` для apex-домена на IP GitHub Pages (`185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`);
-   - `CNAME` для `www` на `<account>.github.io`.
+   - `CNAME` для `www` на `<account>.github.io` (`thepenquins.github.io`).
 3. Включите **Enforce HTTPS**.
-4. При необходимости поменяйте `site` в `astro.config.mjs` (или задайте `SITE_URL` при сборке).
+4. Соберите сайт с нужным адресом: `SITE_URL=https://penquins.software npm run build`. Это меняет canonical, `og:url`, `sitemap` и `robots.txt`; без переменной используется `https://thepenquins.github.io`.
 
 ## Что важно помнить про GitHub Pages
 
