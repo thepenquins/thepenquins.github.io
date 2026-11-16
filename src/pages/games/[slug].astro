@@ -20,7 +20,7 @@ const credits = getGameCredits(game);
 const otherGames = getOtherGames(game.slug, 3);
 const primaryHref = game.playUrl ?? game.itchUrl;
 const isExternal = !game.playUrl;
-const primaryLabel = game.playUrl ? "Играть здесь" : "itch.io";
+const primaryLabel = game.playUrl ? "Играть" : "itch.io";
 
 const canonical = new URL(`/games/${game.slug}/`, Astro.site);
 const cover = new URL(game.cover, Astro.site);
@@ -106,7 +106,7 @@ const jsonLd = {
                   target="_blank"
                   rel="noopener"
                 >
-                  Страница на itch.io <span class="btn__arrow" aria-hidden="true">↗</span>
+                  itch.io <span class="btn__arrow" aria-hidden="true">↗</span>
                 </a>
               )
             }
