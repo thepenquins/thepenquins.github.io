@@ -252,6 +252,22 @@ export const members = sortNames([...new Set(games.flatMap((game) => game.credit
   (name) => ({ name, url: getMemberUrl(name) }),
 );
 
+const coreTeamMeta = [
+  { name: "Oz Fox", role: "Программист" },
+  { name: "Rankel", role: "Художник" },
+  { name: "BACR", role: "Художник" },
+  { name: "lex4nder", role: "Композитор" },
+];
+
+export const coreTeam = coreTeamMeta.map((member) => ({
+  ...member,
+  url: getMemberUrl(member.name),
+}));
+
+const coreTeamNames = new Set(coreTeam.map((member) => member.name));
+
+export const otherMembers = members.filter((member) => !coreTeamNames.has(member.name));
+
 export const getGameCredits = (game: Game) =>
   sortNames(game.credits).map((name) => ({ name, url: getMemberUrl(name) }));
 

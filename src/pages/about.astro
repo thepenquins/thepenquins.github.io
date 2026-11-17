@@ -1,6 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { members, stats } from "../data/games";
+import { coreTeam, otherMembers, stats } from "../data/games";
 
 const title = "О команде — Penquins Software";
 const description =
@@ -43,9 +43,30 @@ const description =
   <section class="team" aria-labelledby="team-heading">
     <div class="container">
       <p class="eyebrow">Люди</p>
-      <h2 id="team-heading" class="team-title">Участники проектов</h2>
+      <h2 id="team-heading" class="team-title">Основной состав</h2>
+
+      <ul class="core-team">
+        {coreTeam.map((member) => (
+          <li>
+            <a
+              class="core-member"
+              href={member.url}
+              target="_blank"
+              rel="noopener"
+              title={`${member.name} на itch.io`}
+              aria-label={`${member.name} — ${member.role}, профиль на itch.io`}
+            >
+              <span class="core-member__role">{member.role}</span>
+              <span class="core-member__name">{member.name}</span>
+              <span class="core-member__arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+
+      <h3 class="team-subtitle">Участники проектов</h3>
       <ul class="members">
-        {members.map((member) => (
+        {otherMembers.map((member) => (
           <li>
             <a
               class="member-chip"
