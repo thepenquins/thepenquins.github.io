@@ -1,7 +1,14 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import GameCard from "../../components/GameCard.astro";
-import { games, getOtherGames, getGameCredits } from "../../data/games";
+import {
+  formatReleaseDate,
+  games,
+  getGameCredits,
+  getOtherGames,
+  getSoundtrackLabel,
+  getTrailerEmbedUrl,
+} from "../../data/games";
 import type { Game } from "../../data/games";
 
 export function getStaticPaths() {
@@ -21,6 +28,7 @@ const otherGames = getOtherGames(game.slug, 3);
 const primaryHref = game.playUrl ?? game.itchUrl;
 const isExternal = !game.playUrl;
 const primaryLabel = game.playUrl ? "Играть" : "itch.io";
+const trailerEmbedUrl = game.trailerUrl ? getTrailerEmbedUrl(game.trailerUrl) : null;
 
 const canonical = new URL(`/games/${game.slug}/`, Astro.site);
 const cover = new URL(game.cover, Astro.site);
@@ -131,14 +139,44 @@ const jsonLd = {
               <dd>{game.genre}</dd>
             </div>
             <div>
+              <dt>Движок</dt>
+              <dd>{game.engine}</dd>
+            </div>
+            <div>
               <dt>Платформы</dt>
               <dd>{game.platforms.join(", ")}</dd>
             </div>
+            {
+              game.releaseDate && (
+                <div>
+                  <dt>Дата выхода</dt>
+                  <dd>{formatReleaseDate(game.releaseDate)}</dd>
+                </div>
+              )
+            }
             {
               game.jam && (
                 <div>
                   <dt>Джем</dt>
                   <dd>{game.jam}</dd>
+                </div>
+              )
+            }
+            {
+              game.soundtrackUrl && (
+                <div>
+                  <dt>Саундтрек</dt>
+                  <dd>
+                    <a
+                      class="game-meta__link"
+                      href={game.soundtrackUrl}
+                      target="_blank"
+                      rel="noopener"
+                    >
+                      {getSoundtrackLabel(game.soundtrackUrl)}
+                      <span aria-hidden="true"> ↗</span>
+                    </a>
+                  </dd>
                 </div>
               )
             }
@@ -178,6 +216,25 @@ const jsonLd = {
           }
         </div>
       </section>
+
+      {
+        trailerEmbedUrl && (
+          <section class="game-section" aria-labelledby="trailer">
+            <h2 class="game-section__label" id="trailer">Трейлер</h2>
+            <div class="game-section__body">
+              <div class="trailer">
+                <iframe
+                  src={trailerEmbedUrl}
+                  title={`Трейлер игры «${game.title}»`}
+                  loading="lazy"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen
+                />
+              </div>
+            </div>
+          </section>
+        )
+      }
 
       {
         game.screenshots.length > 0 && (

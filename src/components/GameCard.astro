@@ -16,6 +16,18 @@ const { game, index = 0 } = Astro.props;
   data-game
   data-genre={game.genre}
   data-authors={game.credits.join("|")}
+  data-search={[
+    game.title,
+    game.tagline,
+    game.description.join(" "),
+    game.genre,
+    game.engine,
+    game.platforms.join(" "),
+    game.jam ?? "",
+    game.credits.join(" "),
+  ]
+    .join(" ")
+    .toLowerCase()}
 >
   <div class="game-card__media">
     <img

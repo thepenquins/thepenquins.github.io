@@ -9,6 +9,8 @@ export type Game = {
   tagline: string;
   description: string[];
   genre: string;
+  /** Движок, на котором сделана игра. Например: "Godot Engine". */
+  engine: string;
   platforms: string[];
   browser?: boolean;
   itchUrl: string;
@@ -17,6 +19,12 @@ export type Game = {
   credits: string[];
   jam?: string;
   controls?: string;
+  /** Дата выхода в формате "ГГГГ-ММ". Отображается как «март 2025». */
+  releaseDate?: string;
+  /** Ссылка на трейлер: YouTube или готовый embed-адрес. */
+  trailerUrl?: string;
+  /** Ссылка на саундтрек (VK Музыка, Bandcamp, YouTube и т.п.). */
+  soundtrackUrl?: string;
   vkPlayUrl?: string;
   /**
    * Ссылка на исходный код игры (репозиторий на GitHub и т.п.).
@@ -42,6 +50,7 @@ const shot = (slug: string, n: number, title: string): Screenshot => ({
 export const games: Game[] = [
   {
     slug: "advorkolodets",
+    engine: "Godot Engine",
     title: "A DVOR-KOLODETS",
     tagline: "Каждый двор-колодец имеет двойное дно",
     description: [
@@ -62,6 +71,7 @@ export const games: Game[] = [
   },
   {
     slug: "piece-of-knight",
+    engine: "Godot Engine",
     title: "Piece of Knight",
     tagline: "Соберись!",
     description: [
@@ -83,6 +93,7 @@ export const games: Game[] = [
   },
   {
     slug: "absolute-brain-rot",
+    engine: "Godot Engine",
     title: "Absolute Brain: rot",
     tagline: "Absurdist puzzle game",
     description: [
@@ -103,6 +114,7 @@ export const games: Game[] = [
   },
   {
     slug: "nibras-play-deluxe",
+    engine: "Godot Engine",
     title: "Театр Нибраса",
     tagline: "Вся жизнь — театр, а театр — Нибраса!",
     description: [
@@ -124,6 +136,7 @@ export const games: Game[] = [
   },
   {
     slug: "shigger",
+    engine: "Godot Engine",
     title: "Лопатель",
     tagline: "Раньше все хотели в космос, а сейчас — к центру Земли!",
     description: [
@@ -143,6 +156,7 @@ export const games: Game[] = [
   },
   {
     slug: "bikerunner",
+    engine: "Godot Engine",
     title: "Глухой велосипедист",
     tagline: "Велосипедист глухой, но нужно ехать домой.",
     description: [
@@ -161,6 +175,7 @@ export const games: Game[] = [
   },
   {
     slug: "insight",
+    engine: "Godot Engine",
     title: "Insight",
     tagline: "Что такое сокровище?",
     description: [
@@ -181,6 +196,7 @@ export const games: Game[] = [
   },
   {
     slug: "night-in-the-antarctica",
+    engine: "Godot Engine",
     title: "Night in the Antarctica",
     tagline: "Одна ночь на станции в Антарктиде",
     description: [
@@ -203,6 +219,7 @@ export const games: Game[] = [
   },
   {
     slug: "meta-detective",
+    engine: "Godot Engine",
     title: "Meta Detective",
     tagline: "Разгадай серию убийств, используя дедукцию",
     description: [
@@ -293,4 +310,78 @@ export const getOtherGames = (slug: string, count = 3) => {
   const index = games.findIndex((game) => game.slug === slug);
   const ordered = [...games.slice(index + 1), ...games.slice(0, index)];
   return ordered.slice(0, count);
+};
+
+const monthNames = [
+  "январь",
+  "февраль",
+  "март",
+  "апрель",
+  "май",
+  "июнь",
+  "июль",
+  "август",
+  "сентябрь",
+  "октябрь",
+  "ноябрь",
+  "декабрь",
+];
+
+export const formatReleaseDate = (value: string) => {
+  const [year = "", month = ""] = value.split("-");
+  const name = monthNames[Number(month) - 1];
+
+  return /^\d{4}$/.test(year) && name ? `${name} ${year}` : value;
+};
+
+export const getTrailerEmbedUrl = (url: string) => {
+  try {
+    const parsed = new URL(url);
+    const host = parsed.hostname.replace(/^www\./, "");
+
+    if (host === "youtu.be") {
+      const id = parsed.pathname.split("/").filter(Boolean)[0];
+      return id ? `https://www.youtube-nocookie.com/embed/${id}` : url;
+    }
+
+    if (host === "youtube.com" || host === "m.youtube.com") {
+      const id =
+        parsed.searchParams.get("v") ??
+        parsed.pathname.match(/\/(?:embed|shorts|live)\/([^/?#]+)/)?.[1];
+      return id ? `https://www.youtube-nocookie.com/embed/${id}` : url;
+    }
+
+    return url;
+  } catch {
+    return url;
+  }
+};
+
+export const getSoundtrackLabel = (url: string) => {
+  try {
+    const host = new URL(url).hostname.replace(/^www\./, "");
+
+    if (host === "vk.com" || host === "vk.ru" || host.endsWith(".vk.com")) {
+      return "VK Музыка";
+    }
+    if (host === "youtube.com" || host === "youtu.be" || host.endsWith(".youtube.com")) {
+      return "YouTube";
+    }
+    if (host === "bandcamp.com" || host.endsWith(".bandcamp.com")) {
+      return "Bandcamp";
+    }
+    if (host === "spotify.com" || host.endsWith(".spotify.com")) {
+      return "Spotify";
+    }
+    if (host === "soundcloud.com" || host.endsWith(".soundcloud.com")) {
+      return "SoundCloud";
+    }
+    if (host === "music.apple.com") {
+      return "Apple Music";
+    }
+
+    return "Слушать";
+  } catch {
+    return "Слушать";
+  }
 };

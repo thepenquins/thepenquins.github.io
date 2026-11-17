@@ -21,6 +21,55 @@ const description = `Каталог игр Penquins Software: ${stats.games} п�
   <section class="section">
     <div class="container">
       <div class="filters">
+        <div class="filters__toolbar">
+          <div class="search">
+            <label class="sr-only" for="game-search">Поиск по играм</label>
+            <svg
+              class="search__icon"
+              viewBox="0 0 24 24"
+              width="16"
+              height="16"
+              aria-hidden="true"
+            >
+              <circle
+                cx="11"
+                cy="11"
+                r="7"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"></circle>
+              <path
+                d="m16.5 16.5 4 4"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"></path>
+            </svg>
+            <input
+              id="game-search"
+              class="search__input"
+              type="search"
+              name="q"
+              placeholder="Найти игру"
+              autocomplete="off"
+              spellcheck="false"
+              data-search
+            />
+            <button
+              class="search__clear"
+              type="button"
+              data-search-clear
+              aria-label="Очистить поиск"
+              hidden
+            >
+              ✕
+            </button>
+          </div>
+
+          <button class="btn btn--ghost filters__random" type="button" data-random hidden>
+            Случайная игра <span class="btn__arrow" aria-hidden="true">→</span>
+          </button>
+        </div>
+
         <div class="filters__row" role="group" aria-label="Фильтр по жанру">
           <span class="filters__label">Жанр</span>
           {
@@ -62,7 +111,7 @@ const description = `Каталог игр Penquins Software: ${stats.games} п�
 
         <noscript>
           <p class="filters__note">
-            Для фильтрации нужен JavaScript — ниже показаны все игры.
+            Для поиска и фильтрации нужен JavaScript — ниже показаны все игры.
           </p>
         </noscript>
       </div>
@@ -72,7 +121,7 @@ const description = `Каталог игр Penquins Software: ${stats.games} п�
       </div>
 
       <p class="filters__empty" data-filter-empty hidden>
-        С таким фильтром игр нет. <a href="/games/">Показать все игры</a>.
+        Ничего не нашлось. <a href="/games/">Показать все игры</a>.
       </p>
     </div>
   </section>
@@ -87,19 +136,28 @@ const description = `Каталог игр Penquins Software: ${stats.games} п�
     const summary = document.querySelector("[data-filter-summary]");
     const empty = document.querySelector("[data-filter-empty]");
     const chips = Array.from(document.querySelectorAll("[data-filter]"));
+    const search = document.querySelector("[data-search]");
+    const searchClear = document.querySelector("[data-search-clear]");
+    const random = document.querySelector("[data-random]");
     const total = cards.length;
+
+    const normalize = (value) => value.toLowerCase().replace(/ё/g, "е").trim();
 
     const apply = () => {
       const params = new URLSearchParams(window.location.search);
       const genre = params.get("genre");
       const author = params.get("author");
+      const query = params.get("q") ?? "";
+      const tokens = normalize(query).split(/\s+/).filter(Boolean);
       let shown = 0;
 
       cards.forEach((card) => {
         const genreOk = !genre || card.dataset.genre === genre;
         const authors = (card.dataset.authors || "").split("|");
         const authorOk = !author || authors.indexOf(author) !== -1;
-        const visible = genreOk && authorOk;
+        const haystack = normalize(card.dataset.search || "");
+        const searchOk = tokens.every((token) => haystack.includes(token));
+        const visible = genreOk && authorOk && searchOk;
 
         card.hidden = !visible;
         if (visible) shown += 1;
@@ -117,7 +175,7 @@ const description = `Каталог игр Penquins Software: ${stats.games} п�
         }
       });
 
-      const active = Boolean(genre || author);
+      const active = Boolean(genre || author || tokens.length);
 
       if (status) status.hidden = !active;
 
@@ -125,10 +183,32 @@ const description = `Каталог игр Penquins Software: ${stats.games} п�
         const parts = [];
         if (genre) parts.push("Жанр: " + genre);
         if (author) parts.push("Автор: " + author);
+        if (tokens.length) parts.push("Поиск: «" + query.trim() + "»");
         summary.textContent = parts.join(" · ") + " — " + shown + " из " + total;
       }
 
       if (empty) empty.hidden = !active || shown > 0;
+
+      if (search && search.value !== query) search.value = query;
+      if (searchClear) searchClear.hidden = !query;
+    };
+
+    const setQuery = (value) => {
+      const params = new URLSearchParams(window.location.search);
+
+      if (value.trim()) {
+        params.set("q", value);
+      } else {
+        params.delete("q");
+      }
+
+      const query = params.toString();
+      window.history.replaceState(
+        null,
+        "",
+        query ? `${window.location.pathname}?${query}` : window.location.pathname,
+      );
+      apply();
     };
 
     document.addEventListener("click", (event) => {
@@ -141,6 +221,33 @@ const description = `Каталог игр Penquins Software: ${stats.games} п�
       window.history.pushState(null, "", link.href);
       apply();
     });
+
+    search?.addEventListener("input", () => setQuery(search.value));
+    search?.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && search.value) {
+        event.preventDefault();
+        search.value = "";
+        setQuery("");
+      }
+    });
+
+    searchClear?.addEventListener("click", () => {
+      if (!search) return;
+      search.value = "";
+      setQuery("");
+      search.focus();
+    });
+
+    if (random) {
+      random.hidden = false;
+      random.addEventListener("click", () => {
+        const visible = cards.filter((card) => !card.hidden);
+        const pool = visible.length ? visible : cards;
+        const card = pool[Math.floor(Math.random() * pool.length)];
+
+        if (card) window.location.assign(card.href);
+      });
+    }
 
     window.addEventListener("popstate", apply);
     apply();
