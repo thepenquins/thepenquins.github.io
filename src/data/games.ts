@@ -19,6 +19,11 @@ export type Game = {
   controls?: string;
   vkPlayUrl?: string;
   /**
+   * Ссылка на исходный код игры (репозиторий на GitHub и т.п.).
+   * Например: "https://github.com/thepenquins/nibras-theater"
+   */
+  sourceUrl?: string;
+  /**
    * Локальная веб-сборка, если она лежит в public/games/<slug>/.
    * Например: "/games/advorkolodets/play/"
    */
@@ -107,6 +112,7 @@ export const games: Game[] = [
     platforms: ["Windows"],
     itchUrl: "https://penquins.itch.io/nibras-play-deluxe",
     vkPlayUrl: "https://vkplay.ru/play/game/nibras-play-39828",
+    sourceUrl: "https://github.com/thepenquins/nibras-theater",
     cover: "/covers/nibras-play-deluxe.webp",
     screenshots: [
       shot("nibras-play-deluxe", 1, "Театр Нибраса"),
