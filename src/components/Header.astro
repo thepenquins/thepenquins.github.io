@@ -1,8 +1,12 @@
 ---
+import { getCollection } from "astro:content";
+
 const path = Astro.url.pathname;
+const hasDevlog = (await getCollection("devlog", ({ data }) => !data.draft)).length > 0;
 
 const links = [
   { href: "/games/", label: "Игры" },
+  ...(hasDevlog ? [{ href: "/devlog/", label: "Девлог" }] : []),
   { href: "/about/", label: "О команде" },
 ];
 

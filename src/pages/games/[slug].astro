@@ -2,13 +2,14 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import GameCard from "../../components/GameCard.astro";
 import {
-  formatReleaseDate,
   games,
   getGameCredits,
   getOtherGames,
   getSoundtrackLabel,
   getTrailerEmbedUrl,
 } from "../../data/games";
+import { formatLongDate, formatMonthYear } from "../../lib/dates";
+import { getGameNotes } from "../../lib/devlog";
 import type { Game } from "../../data/games";
 
 export function getStaticPaths() {
@@ -29,6 +30,7 @@ const primaryHref = game.playUrl ?? game.itchUrl;
 const isExternal = !game.playUrl;
 const primaryLabel = game.playUrl ? "Играть" : "itch.io";
 const trailerEmbedUrl = game.trailerUrl ? getTrailerEmbedUrl(game.trailerUrl) : null;
+const gameNotes = await getGameNotes(game.slug);
 
 const canonical = new URL(`/games/${game.slug}/`, Astro.site);
 const cover = new URL(game.cover, Astro.site);
@@ -150,7 +152,7 @@ const jsonLd = {
               game.releaseDate && (
                 <div>
                   <dt>Дата выхода</dt>
-                  <dd>{formatReleaseDate(game.releaseDate)}</dd>
+                  <dd>{formatMonthYear(game.releaseDate)}</dd>
                 </div>
               )
             }
@@ -216,6 +218,37 @@ const jsonLd = {
           }
         </div>
       </section>
+
+      {
+        gameNotes.length > 0 && (
+          <section class="game-section" aria-labelledby="game-notes">
+            <h2 class="game-section__label" id="game-notes">Заметки</h2>
+            <div class="game-section__body">
+              <ul class="game-notes">
+                {gameNotes.map((note) => (
+                  <li>
+                    <a class="game-note" href={`/devlog/${note.id}/`}>
+                      <time
+                        class="game-note__date"
+                        datetime={note.data.date.toISOString()}
+                      >
+                        {formatLongDate(note.data.date)}
+                      </time>
+                      <span class="game-note__title">{note.data.title}</span>
+                      <span class="game-note__arrow" aria-hidden="true">
+                        →
+                      </span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+              <a class="link-more game-notes__more" href="/devlog/">
+                Все заметки <span aria-hidden="true">→</span>
+              </a>
+            </div>
+          </section>
+        )
+      }
 
       {
         trailerEmbedUrl && (

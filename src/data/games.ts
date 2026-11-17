@@ -312,28 +312,6 @@ export const getOtherGames = (slug: string, count = 3) => {
   return ordered.slice(0, count);
 };
 
-const monthNames = [
-  "январь",
-  "февраль",
-  "март",
-  "апрель",
-  "май",
-  "июнь",
-  "июль",
-  "август",
-  "сентябрь",
-  "октябрь",
-  "ноябрь",
-  "декабрь",
-];
-
-export const formatReleaseDate = (value: string) => {
-  const [year = "", month = ""] = value.split("-");
-  const name = monthNames[Number(month) - 1];
-
-  return /^\d{4}$/.test(year) && name ? `${name} ${year}` : value;
-};
-
 export const getTrailerEmbedUrl = (url: string) => {
   try {
     const parsed = new URL(url);

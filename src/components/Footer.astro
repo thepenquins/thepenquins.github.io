@@ -1,5 +1,8 @@
 ---
+import { getCollection } from "astro:content";
+
 const year = new Date().getFullYear();
+const hasDevlog = (await getCollection("devlog", ({ data }) => !data.draft)).length > 0;
 ---
 
 <footer class="site-footer">
@@ -15,6 +18,7 @@ const year = new Date().getFullYear();
           <h3>Сайт</h3>
           <a href="/">Главная</a>
           <a href="/games/">Игры</a>
+          {hasDevlog && <a href="/devlog/">Девлог</a>}
           <a href="/about/">О команде</a>
         </div>
         <div class="footer-col">
