@@ -51,6 +51,7 @@ export const games: Game[] = [
   {
     slug: "advorkolodets",
     engine: "Godot Engine",
+    releaseDate: "2026-04",
     title: "A DVOR-KOLODETS",
     tagline: "Каждый двор-колодец имеет двойное дно",
     description: [
@@ -72,6 +73,7 @@ export const games: Game[] = [
   {
     slug: "piece-of-knight",
     engine: "Godot Engine",
+    releaseDate: "2025-11",
     title: "Piece of Knight",
     tagline: "Соберись!",
     description: [
@@ -94,6 +96,7 @@ export const games: Game[] = [
   {
     slug: "absolute-brain-rot",
     engine: "Godot Engine",
+    releaseDate: "2025-05",
     title: "Absolute Brain: rot",
     tagline: "Absurdist puzzle game",
     description: [
@@ -115,6 +118,7 @@ export const games: Game[] = [
   {
     slug: "nibras-play-deluxe",
     engine: "Godot Engine",
+    releaseDate: "2024-08",
     title: "Театр Нибраса",
     tagline: "Вся жизнь — театр, а театр — Нибраса!",
     description: [
@@ -137,6 +141,7 @@ export const games: Game[] = [
   {
     slug: "shigger",
     engine: "Godot Engine",
+    releaseDate: "2024-05",
     title: "Лопатель",
     tagline: "Раньше все хотели в космос, а сейчас — к центру Земли!",
     description: [
@@ -157,6 +162,7 @@ export const games: Game[] = [
   {
     slug: "bikerunner",
     engine: "Godot Engine",
+    releaseDate: "2024-02",
     title: "Глухой велосипедист",
     tagline: "Велосипедист глухой, но нужно ехать домой.",
     description: [
@@ -176,6 +182,7 @@ export const games: Game[] = [
   {
     slug: "insight",
     engine: "Godot Engine",
+    releaseDate: "2024-01",
     title: "Insight",
     tagline: "Что такое сокровище?",
     description: [
@@ -197,6 +204,7 @@ export const games: Game[] = [
   {
     slug: "night-in-the-antarctica",
     engine: "Godot Engine",
+    releaseDate: "2021-12",
     title: "Night in the Antarctica",
     tagline: "Одна ночь на станции в Антарктиде",
     description: [
@@ -220,6 +228,7 @@ export const games: Game[] = [
   {
     slug: "meta-detective",
     engine: "Godot Engine",
+    releaseDate: "2021-11",
     title: "Meta Detective",
     tagline: "Разгадай серию убийств, используя дедукцию",
     description: [
