@@ -51,6 +51,7 @@ export const games: Game[] = [
     genre: "Визуальная новелла",
     platforms: ["Windows"],
     itchUrl: "https://penquins.itch.io/advorkolodets",
+    sourceUrl: "https://github.com/thepenquins/courtyard-project",
     cover: "/covers/advorkolodets.webp",
     screenshots: [
       shot("advorkolodets", 1, "A DVOR-KOLODETS"),
@@ -133,6 +134,7 @@ export const games: Game[] = [
     platforms: ["Браузер"],
     browser: true,
     itchUrl: "https://penquins.itch.io/shigger",
+    sourceUrl: "https://github.com/thepenquins/shigger",
     playUrl: "/games/shigger/play/",
     cover: "/covers/shigger.webp",
     screenshots: [],
