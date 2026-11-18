@@ -72,6 +72,7 @@ export const games: Game[] = [
       shot("advorkolodets", 3, "A DVOR-KOLODETS"),
     ],
     credits: ["Rankel", "lex4nder", "danya_balakhnin", "LehanFox", "Oz Fox"],
+    jam: "VN JAM CA: Городские легенды",
   },
   {
     slug: "piece-of-knight",
@@ -143,6 +144,7 @@ export const games: Game[] = [
       shot("nibras-play-deluxe", 3, "Театр Нибраса"),
     ],
     credits: ["lex4nder", "Rankel", "BACR", "Oz Fox"],
+    jam: "Джем Ста Цветов",
   },
   {
     slug: "shigger",
@@ -168,6 +170,7 @@ export const games: Game[] = [
       shot("shigger", 3, "Лопатель"),
     ],
     credits: ["Rankel", "BACR", "lex4nder", "Aki_ona", "Oz Fox"],
+    jam: "Siberian Game Jam · май 2024",
     controls: "A / D или ← / → — движение · S или ↓ — копать · не забывайте кормить котиков",
   },
   {
@@ -190,6 +193,7 @@ export const games: Game[] = [
       shot("bikerunner", 3, "Глухой велосипедист"),
     ],
     credits: ["BACR", "Rankel", "lex4nder", "Genius_Generator", "Oz Fox"],
+    jam: "Social Game Jam",
   },
   {
     slug: "insight",
