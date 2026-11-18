@@ -1,6 +1,8 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { coreTeam, otherMembers, stats } from "../data/games";
+import { timeline } from "../data/timeline";
+import { formatMonthYear } from "../lib/dates";
 
 const title = "О команде — Penquins Software";
 const description =
@@ -37,6 +39,39 @@ const description =
         <div><strong>{stats.games}</strong><span>игр в каталоге</span></div>
         <div><strong>{stats.genres}</strong><span>жанров</span></div>
       </div>
+    </div>
+  </section>
+
+  <section class="timeline" aria-labelledby="timeline-heading">
+    <div class="container">
+      <div class="timeline-head">
+        <div>
+          <p class="eyebrow">Хронология</p>
+          <h2 id="timeline-heading" class="timeline-title">История команды</h2>
+        </div>
+        <p class="timeline-lead">
+          От первого джема до последних релизов — короткая хронология команды.
+        </p>
+      </div>
+
+      <ol class="timeline-list">
+        {timeline.map((entry) => (
+          <li class="timeline-item">
+            <div class="timeline-item__meta">
+              <time class="timeline-item__date" datetime={entry.date}>
+                {formatMonthYear(entry.date)}
+              </time>
+              <span class="timeline-item__tag">{entry.tag}</span>
+            </div>
+            <div class="timeline-item__body">
+              <h3 class="timeline-item__title">
+                <a href={entry.href}>{entry.title}</a>
+              </h3>
+              <p class="timeline-item__text">{entry.text}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
     </div>
   </section>
 
