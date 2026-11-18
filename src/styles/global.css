@@ -2722,3 +2722,212 @@ body.is-lightbox-open {
     font-size: 24px;
   }
 }
+
+/* ---------- Пасхалка: пингвин ---------- */
+
+.penguin-scene {
+  position: fixed;
+  right: clamp(14px, 2.4vw, 30px);
+  bottom: clamp(14px, 2.4vw, 26px);
+  z-index: 45;
+  display: grid;
+  grid-template-columns: 104px minmax(0, 1fr);
+  align-items: end;
+  gap: 6px 14px;
+  width: min(352px, calc(100vw - 28px));
+  padding: 16px 20px 15px 16px;
+  border: 1px solid var(--line-strong);
+  border-radius: 20px;
+  background:
+    radial-gradient(120% 120% at 12% 100%, rgba(79, 185, 221, 0.16), transparent 62%),
+    linear-gradient(158deg, rgba(18, 34, 48, 0.97), rgba(7, 12, 18, 0.97));
+  box-shadow:
+    0 28px 60px -28px rgba(0, 0, 0, 0.92),
+    inset 0 1px 0 rgba(201, 246, 255, 0.08);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  pointer-events: none;
+  transform-origin: 100% 100%;
+}
+
+.penguin-scene.is-visible {
+  animation: penguin-scene-in 0.45s cubic-bezier(0.2, 0.8, 0.25, 1) both;
+}
+
+.penguin-scene.is-leaving {
+  animation: penguin-scene-out 0.35s ease-in forwards;
+}
+
+.penguin-scene.is-milestone {
+  border-color: rgba(143, 227, 255, 0.45);
+  box-shadow:
+    0 28px 60px -28px rgba(0, 0, 0, 0.92),
+    0 0 46px -16px rgba(143, 227, 255, 0.45),
+    inset 0 1px 0 rgba(201, 246, 255, 0.12);
+}
+
+.penguin-scene__stage {
+  position: relative;
+  height: 104px;
+}
+
+.penguin-scene__floe {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 124px;
+  height: 30px;
+  transform: translateX(-50%);
+  border-radius: 52% 48% 46% 54% / 62% 66% 38% 34%;
+  background: linear-gradient(
+    158deg,
+    rgba(201, 246, 255, 0.92),
+    rgba(143, 227, 255, 0.7) 52%,
+    rgba(79, 185, 221, 0.48)
+  );
+  box-shadow:
+    0 14px 26px -12px rgba(79, 185, 221, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.penguin-scene__bird {
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  width: 88px;
+  height: auto;
+  transform: translateX(-50%) rotate(-4deg);
+  filter: drop-shadow(0 10px 14px rgba(0, 0, 0, 0.5));
+  animation: penguin-bob 3.6s ease-in-out infinite;
+}
+
+.penguin-scene__text {
+  min-width: 0;
+  padding-bottom: 7px;
+}
+
+.penguin-scene__line {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+
+.penguin-scene__count {
+  margin: 10px 0 0;
+  font-family: var(--font-display);
+  font-size: 8px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+@keyframes penguin-scene-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.94);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes penguin-scene-out {
+  to {
+    opacity: 0;
+    transform: translateY(8px) scale(0.97);
+  }
+}
+
+@keyframes penguin-scene-fade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes penguin-scene-fade-out {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes penguin-bob {
+  0%,
+  100% {
+    transform: translateX(-50%) rotate(-4deg) translateY(0);
+  }
+
+  50% {
+    transform: translateX(-50%) rotate(-3deg) translateY(-4px);
+  }
+}
+
+@media (max-width: 560px) {
+  .penguin-scene {
+    grid-template-columns: 86px minmax(0, 1fr);
+    gap: 4px 11px;
+    width: min(304px, calc(100vw - 24px));
+    padding: 13px 15px 12px 13px;
+    border-radius: 17px;
+  }
+
+  .penguin-scene__stage {
+    height: 88px;
+  }
+
+  .penguin-scene__floe {
+    width: 104px;
+    height: 26px;
+  }
+
+  .penguin-scene__bird {
+    bottom: 13px;
+    width: 74px;
+  }
+
+  .penguin-scene__text {
+    padding-bottom: 5px;
+  }
+
+  .penguin-scene__line {
+    font-size: 13px;
+    line-height: 1.45;
+  }
+
+  .penguin-scene__count {
+    margin-top: 8px;
+    font-size: 7.5px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .penguin-scene.is-visible {
+    animation: penguin-scene-fade 0.25s linear both;
+  }
+
+  .penguin-scene.is-leaving {
+    animation: penguin-scene-fade-out 0.2s linear forwards;
+  }
+
+  .penguin-scene__bird {
+    animation: none;
+  }
+}
+
+@media print {
+  .penguin-scene {
+    display: none !important;
+  }
+}

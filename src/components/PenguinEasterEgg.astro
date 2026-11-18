@@ -1,0 +1,156 @@
+---
+---
+
+<div class="penguin-scene" data-penguin-scene role="status" aria-live="polite" hidden>
+  <div class="penguin-scene__stage" aria-hidden="true">
+    <span class="penguin-scene__floe"></span>
+    <img
+      class="penguin-scene__bird"
+      src="/penguin.png"
+      alt=""
+      width="512"
+      height="512"
+      decoding="async"
+    />
+  </div>
+  <div class="penguin-scene__text">
+    <p class="penguin-scene__line" data-penguin-line></p>
+    <p class="penguin-scene__count" data-penguin-count></p>
+  </div>
+</div>
+
+<script>
+  const STORAGE_KEY = "penquins:penguin-sightings";
+  const CLICKS_NEEDED = 5;
+  const CLICK_WINDOW = 2500;
+  const WORDS = ["penguin", "пингвин"];
+
+  const phrases = [
+    "Пингвин вышел на льдину. Постоял, посмотрел. Остался доволен.",
+    "Пингвин вернулся. Говорит, что видел вас в каталоге.",
+    "Пингвин заметил, что вы его заметили.",
+    "Пингвин уже не удивляется. Просто заходит поздороваться.",
+    "Пингвин передаёт привет. Больше ничего передать не просил.",
+    "Пингвин считает, что вы уже свой.",
+    "У пингвина всё по плану: льдина, вы, Антарктика.",
+  ];
+
+  const scene = document.querySelector<HTMLElement>("[data-penguin-scene]");
+  const line = document.querySelector<HTMLElement>("[data-penguin-line]");
+  const counter = document.querySelector<HTMLElement>("[data-penguin-count]");
+
+  if (scene && line && counter) {
+    let hideTimer = 0;
+    let removeTimer = 0;
+
+    const readCount = () => {
+      try {
+        const value = Number(window.localStorage.getItem(STORAGE_KEY));
+        return Number.isFinite(value) && value > 0 ? Math.floor(value) : 0;
+      } catch {
+        return 0;
+      }
+    };
+
+    const bumpCount = () => {
+      const next = readCount() + 1;
+
+      try {
+        window.localStorage.setItem(STORAGE_KEY, String(next));
+      } catch {
+        /* приватный режим — просто показываем сцену без счётчика */
+      }
+
+      return next;
+    };
+
+    const show = () => {
+      const count = bumpCount();
+      const phrase = phrases[(count - 1) % phrases.length] ?? phrases[0]!;
+
+      window.clearTimeout(hideTimer);
+      window.clearTimeout(removeTimer);
+
+      scene.classList.remove("is-leaving", "is-visible");
+      scene.classList.toggle("is-milestone", count >= 3);
+      scene.hidden = false;
+      void scene.offsetWidth;
+      scene.classList.add("is-visible");
+
+      // Текст ставим после показа, чтобы скринридер озвучил живую область.
+      line.textContent = "";
+      counter.textContent = "";
+      requestAnimationFrame(() => {
+        line.textContent = phrase;
+        counter.textContent = `Замечен ×${count}`;
+      });
+
+      const visibleFor = count >= 3 ? 6400 : 5200;
+
+      hideTimer = window.setTimeout(() => {
+        scene.classList.add("is-leaving");
+        removeTimer = window.setTimeout(() => {
+          scene.hidden = true;
+          scene.classList.remove("is-visible", "is-leaving");
+        }, 420);
+      }, visibleFor);
+    };
+
+    const isHomePage = () =>
+      window.location.pathname === "/" || window.location.pathname === "/index.html";
+
+    const brand = document.querySelector<HTMLAnchorElement>(".site-header .brand");
+    let clickTimes: number[] = [];
+
+    brand?.addEventListener("click", (event) => {
+      if (event.defaultPrevented) return;
+      if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+        return;
+      }
+
+      const now = Date.now();
+      clickTimes = clickTimes.filter((time) => now - time <= CLICK_WINDOW);
+      clickTimes.push(now);
+
+      if (clickTimes.length >= CLICKS_NEEDED) {
+        clickTimes = [];
+        event.preventDefault();
+        show();
+        return;
+      }
+
+      // На главной логотип ведёт на ту же страницу — заменяем переход
+      // плавным возвратом наверх, чтобы серия кликов не сбрасывалась.
+      if (isHomePage()) {
+        event.preventDefault();
+
+        if (clickTimes.length === 1) {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      }
+    });
+
+    let typed = "";
+
+    document.addEventListener("keydown", (event) => {
+      if (event.metaKey || event.ctrlKey || event.altKey) return;
+
+      const target = event.target as HTMLElement | null;
+      if (
+        target?.isContentEditable ||
+        (target && /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName))
+      ) {
+        return;
+      }
+
+      if (event.key.length !== 1) return;
+
+      typed = (typed + event.key.toLowerCase()).slice(-7);
+
+      if (WORDS.includes(typed)) {
+        typed = "";
+        show();
+      }
+    });
+  }
+</script>
