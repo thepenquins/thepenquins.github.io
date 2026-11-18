@@ -65,7 +65,20 @@ const description =
             </div>
             <div class="timeline-item__body">
               <h3 class="timeline-item__title">
-                <a href={entry.href}>{entry.title}</a>
+                <a
+                  href={entry.href}
+                  target={entry.external ? "_blank" : undefined}
+                  rel={entry.external ? "noopener" : undefined}
+                >
+                  {entry.title}
+                  {
+                    entry.external && (
+                      <span class="timeline-item__arrow" aria-hidden="true">
+                        {" ↗"}
+                      </span>
+                    )
+                  }
+                </a>
               </h3>
               <p class="timeline-item__text">{entry.text}</p>
             </div>

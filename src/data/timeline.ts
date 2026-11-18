@@ -7,6 +7,8 @@ export type TimelineEntry = {
   text: string;
   tag: string;
   href: string;
+  /** Внешняя ссылка (например, на itch.io) открывается в новой вкладке. */
+  external?: boolean;
 };
 
 /** Короткие описания игр для таймлайна. */
@@ -60,7 +62,16 @@ const firstJam: TimelineEntry = {
   href: "/devlog/istoriya-igr-s-dzhemov-project-kilhuman/",
 };
 
+const underTheRain: TimelineEntry = {
+  date: "2023-11",
+  title: "Under the Rain",
+  text: "Молодой маг не собирался быть героем, но кто-то же должен остановить дождь.",
+  tag: "Siberian Game Jam",
+  href: "https://penquins.itch.io/under-the-rain",
+  external: true,
+};
+
 /** Хронология команды: от первого джема до последних релизов. */
-export const timeline: TimelineEntry[] = [firstJam, ...gameEntries].sort((a, b) =>
+export const timeline: TimelineEntry[] = [firstJam, underTheRain, ...gameEntries].sort((a, b) =>
   a.date.localeCompare(b.date),
 );

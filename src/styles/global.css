@@ -1740,6 +1740,20 @@ body.is-lightbox-open {
   border-radius: 4px;
 }
 
+.timeline-item__arrow {
+  display: inline-block;
+  margin-left: 3px;
+  font-size: 0.6em;
+  font-weight: 500;
+  color: var(--dim);
+  vertical-align: 0.55em;
+  transition: color 0.2s ease;
+}
+
+.timeline-item__title a:hover .timeline-item__arrow {
+  color: var(--ice);
+}
+
 .timeline-item__text {
   max-width: 62ch;
   margin: 8px 0 0;
