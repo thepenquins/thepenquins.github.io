@@ -1150,6 +1150,50 @@ h3 {
   padding-top: 4px;
 }
 
+.game-hero__topline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 10px 4px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  font-family: var(--font-display);
+  font-size: 8.5px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.status-badge::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.status-badge--released {
+  border-color: rgba(143, 227, 255, 0.35);
+  background: rgba(143, 227, 255, 0.07);
+  color: var(--ice);
+}
+
+.status-badge--in-development {
+  border-color: rgba(255, 157, 77, 0.4);
+  background: rgba(255, 157, 77, 0.08);
+  color: var(--orange);
+}
+
 .game-title {
   margin: 12px 0 16px;
   font-family: var(--font-display);

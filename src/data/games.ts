@@ -21,6 +21,8 @@ export type Game = {
   controls?: string;
   /** Дата выхода в формате "ГГГГ-ММ". Отображается как «март 2025». */
   releaseDate?: string;
+  /** Статус игры. Отображается бейджем на странице игры. */
+  status: "released" | "in-development";
   /** Ссылка на трейлер: YouTube или готовый embed-адрес. */
   trailerUrl?: string;
   /** Ссылка на саундтрек (VK Музыка, Bandcamp, YouTube и т.п.). */
@@ -52,6 +54,7 @@ export const games: Game[] = [
     slug: "advorkolodets",
     engine: "Godot Engine",
     releaseDate: "2026-04",
+    status: "released",
     title: "A DVOR-KOLODETS",
     tagline: "Каждый двор-колодец имеет двойное дно",
     description: [
@@ -74,6 +77,7 @@ export const games: Game[] = [
     slug: "piece-of-knight",
     engine: "Godot Engine",
     releaseDate: "2025-11",
+    status: "released",
     title: "Piece of Knight",
     tagline: "Соберись!",
     description: [
@@ -97,6 +101,7 @@ export const games: Game[] = [
     slug: "absolute-brain-rot",
     engine: "Godot Engine",
     releaseDate: "2025-05",
+    status: "released",
     title: "Absolute Brain: rot",
     tagline: "Absurdist puzzle game",
     description: [
@@ -119,6 +124,7 @@ export const games: Game[] = [
     slug: "nibras-play-deluxe",
     engine: "Godot Engine",
     releaseDate: "2024-08",
+    status: "released",
     title: "Театр Нибраса",
     tagline: "Вся жизнь — театр, а театр — Нибраса!",
     description: [
@@ -142,6 +148,7 @@ export const games: Game[] = [
     slug: "shigger",
     engine: "Godot Engine",
     releaseDate: "2024-05",
+    status: "released",
     title: "Лопатель",
     tagline: "Раньше все хотели в космос, а сейчас — к центру Земли!",
     description: [
@@ -155,7 +162,11 @@ export const games: Game[] = [
     sourceUrl: "https://github.com/thepenquins/shigger",
     playUrl: "/games/shigger/play/",
     cover: "/covers/shigger.webp",
-    screenshots: [],
+    screenshots: [
+      shot("shigger", 1, "Лопатель"),
+      shot("shigger", 2, "Лопатель"),
+      shot("shigger", 3, "Лопатель"),
+    ],
     credits: ["Rankel", "BACR", "lex4nder", "Aki_ona", "Oz Fox"],
     controls: "A / D или ← / → — движение · S или ↓ — копать · не забывайте кормить котиков",
   },
@@ -163,6 +174,7 @@ export const games: Game[] = [
     slug: "bikerunner",
     engine: "Godot Engine",
     releaseDate: "2024-02",
+    status: "released",
     title: "Глухой велосипедист",
     tagline: "Велосипедист глухой, но нужно ехать домой.",
     description: [
@@ -183,6 +195,7 @@ export const games: Game[] = [
     slug: "insight",
     engine: "Godot Engine",
     releaseDate: "2024-01",
+    status: "released",
     title: "Insight",
     tagline: "Что такое сокровище?",
     description: [
@@ -205,6 +218,7 @@ export const games: Game[] = [
     slug: "night-in-the-antarctica",
     engine: "Godot Engine",
     releaseDate: "2021-12",
+    status: "released",
     title: "Night in the Antarctica",
     tagline: "Одна ночь на станции в Антарктиде",
     description: [
@@ -229,6 +243,7 @@ export const games: Game[] = [
     slug: "meta-detective",
     engine: "Godot Engine",
     releaseDate: "2021-11",
+    status: "released",
     title: "Meta Detective",
     tagline: "Разгадай серию убийств, используя дедукцию",
     description: [
@@ -240,7 +255,11 @@ export const games: Game[] = [
     browser: true,
     itchUrl: "https://penquins.itch.io/meta-detective",
     cover: "/covers/meta-detective.webp",
-    screenshots: [],
+    screenshots: [
+      shot("meta-detective", 1, "Meta Detective"),
+      shot("meta-detective", 2, "Meta Detective"),
+      shot("meta-detective", 3, "Meta Detective"),
+    ],
     credits: ["Rankel", "Oz Fox"],
     jam: "джем на DTF",
     controls: "Стрелки — движение · J — журнал · ЛКМ — перелистывание диалогов",

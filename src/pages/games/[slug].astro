@@ -29,6 +29,7 @@ const otherGames = getOtherGames(game.slug, 3);
 const primaryHref = game.playUrl ?? game.itchUrl;
 const isExternal = !game.playUrl;
 const primaryLabel = game.playUrl ? "Играть" : "itch.io";
+const statusLabel = game.status === "released" ? "Вышла" : "В разработке";
 const trailerEmbedUrl = game.trailerUrl ? getTrailerEmbedUrl(game.trailerUrl) : null;
 const gameNotes = await getGameNotes(game.slug);
 
@@ -80,9 +81,14 @@ const jsonLd = {
         </div>
 
         <div class="game-hero__info">
-          <p class="eyebrow">
-            {game.genre}{game.browser && " · в браузере"}
-          </p>
+          <div class="game-hero__topline">
+            <p class="eyebrow">
+              {game.genre}{game.browser && " · в браузере"}
+            </p>
+            <span class={`status-badge status-badge--${game.status}`}>
+              {statusLabel}
+            </span>
+          </div>
           <h1 class="game-title">{game.title}</h1>
           <p class="game-tagline">{game.tagline}</p>
 
