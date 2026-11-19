@@ -258,6 +258,7 @@ export const games: Game[] = [
     platforms: ["Браузер", "Windows"],
     browser: true,
     itchUrl: "https://penquins.itch.io/meta-detective",
+    playUrl: "/games/meta-detective/play/",
     cover: "/covers/meta-detective.webp",
     screenshots: [
       shot("meta-detective", 1, "Meta Detective"),
