@@ -88,6 +88,7 @@ export const games: Game[] = [
     genre: "Экшен",
     platforms: ["Windows"],
     itchUrl: "https://penquins.itch.io/piece-of-knight",
+    soundtrackUrl: "https://vk.ru/music/playlist/-221731834_17_b9f591b7d7f9899e71",
     cover: "/covers/piece-of-knight.webp",
     screenshots: [
       shot("piece-of-knight", 1, "Piece of Knight"),
@@ -137,6 +138,7 @@ export const games: Game[] = [
     itchUrl: "https://penquins.itch.io/nibras-play-deluxe",
     vkPlayUrl: "https://vkplay.ru/play/game/nibras-play-39828",
     sourceUrl: "https://github.com/thepenquins/nibras-theater",
+    soundtrackUrl: "https://vk.ru/music/playlist/-221731834_16_0ef754f4a2454ab23f",
     cover: "/covers/nibras-play-deluxe.webp",
     screenshots: [
       shot("nibras-play-deluxe", 1, "Театр Нибраса"),
@@ -162,6 +164,7 @@ export const games: Game[] = [
     browser: true,
     itchUrl: "https://penquins.itch.io/shigger",
     sourceUrl: "https://github.com/thepenquins/shigger",
+    soundtrackUrl: "https://vk.ru/music/playlist/-221731834_15_58e7320b03a0e0409e",
     playUrl: "/games/shigger/play/",
     cover: "/covers/shigger.webp",
     screenshots: [
@@ -209,6 +212,7 @@ export const games: Game[] = [
     genre: "Визуальная новелла",
     platforms: ["Windows", "Android"],
     itchUrl: "https://penquins.itch.io/insight",
+    soundtrackUrl: "https://vk.ru/music/playlist/-221731834_5_21e19da93d15724e70",
     cover: "/covers/insight.webp",
     screenshots: [
       shot("insight", 1, "Insight"),
