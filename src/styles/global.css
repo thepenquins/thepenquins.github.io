@@ -2368,6 +2368,112 @@ body.is-lightbox-open {
   border-top: 1px solid var(--line);
 }
 
+.devlog-pager {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.devlog-pager__link {
+  display: grid;
+  gap: 7px;
+  padding: 18px 20px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(143, 227, 255, 0.025);
+  text-decoration: none;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.devlog-pager__link:hover {
+  border-color: var(--line-strong);
+  background: rgba(143, 227, 255, 0.06);
+}
+
+.devlog-pager__link:focus-visible {
+  outline: 2px solid var(--ice);
+  outline-offset: 3px;
+}
+
+.devlog-pager__link--next {
+  justify-items: end;
+  text-align: right;
+}
+
+.devlog-pager__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-display);
+  font-size: 8.5px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.devlog-pager__title {
+  font-family: var(--font-display);
+  font-size: clamp(15px, 1.6vw, 18px);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+
+.devlog-pager__date {
+  font-family: var(--font-display);
+  font-size: 8.5px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.devlog-related {
+  padding-block: clamp(30px, 4vw, 48px) clamp(48px, 7vw, 88px);
+  border-top: 1px solid var(--line);
+}
+
+.devlog-related__title {
+  margin: 10px 0 0;
+  font-family: var(--font-display);
+  font-size: clamp(24px, 3.2vw, 36px);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+}
+
+.devlog-related__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 14px;
+  margin: clamp(22px, 3vw, 30px) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.devlog-related .devlog-card__summary {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+@media (max-width: 640px) {
+  .devlog-pager {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .devlog-pager__link--next {
+    justify-items: start;
+    text-align: left;
+  }
+}
+
 .game-notes {
   display: grid;
   gap: 8px;

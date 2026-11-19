@@ -3,6 +3,7 @@ import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getGame } from "../../data/games";
 import { formatLongDate } from "../../lib/dates";
+import { getDevlogPosts, getRelatedPosts } from "../../lib/devlog";
 
 export async function getStaticPaths() {
   const posts = await getCollection("devlog", ({ data }) => !data.draft);
@@ -16,6 +17,13 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 const { Content } = await render(post);
 const game = post.data.game ? getGame(post.data.game) : undefined;
+
+const posts = await getDevlogPosts();
+const postIndex = posts.findIndex((item) => item.id === post.id);
+const newerPost = postIndex > 0 ? posts[postIndex - 1] : undefined;
+const olderPost =
+  postIndex >= 0 && postIndex < posts.length - 1 ? posts[postIndex + 1] : undefined;
+const relatedPosts = await getRelatedPosts(post.id, 3);
 
 const canonical = new URL(`/devlog/${post.id}/`, Astro.site);
 const ogImage = new URL(`/og/devlog/${post.id}.jpg`, Astro.site);
@@ -70,12 +78,80 @@ const jsonLd = {
       </div>
 
       <footer class="devlog-post__foot">
+        {
+          (olderPost || newerPost) && (
+            <nav class="devlog-pager" aria-label="Навигация по заметкам">
+              {olderPost ? (
+                <a class="devlog-pager__link devlog-pager__link--prev" href={`/devlog/${olderPost.id}/`}>
+                  <span class="devlog-pager__label">
+                    <span aria-hidden="true">←</span> Предыдущая заметка
+                  </span>
+                  <span class="devlog-pager__title">{olderPost.data.title}</span>
+                  <time class="devlog-pager__date" datetime={olderPost.data.date.toISOString()}>
+                    {formatLongDate(olderPost.data.date)}
+                  </time>
+                </a>
+              ) : (
+                <span class="devlog-pager__spacer" aria-hidden="true" />
+              )}
+              {newerPost ? (
+                <a class="devlog-pager__link devlog-pager__link--next" href={`/devlog/${newerPost.id}/`}>
+                  <span class="devlog-pager__label">
+                    Следующая заметка <span aria-hidden="true">→</span>
+                  </span>
+                  <span class="devlog-pager__title">{newerPost.data.title}</span>
+                  <time class="devlog-pager__date" datetime={newerPost.data.date.toISOString()}>
+                    {formatLongDate(newerPost.data.date)}
+                  </time>
+                </a>
+              ) : (
+                <span class="devlog-pager__spacer" aria-hidden="true" />
+              )}
+            </nav>
+          )
+        }
         <a class="link-more" href="/devlog/">
           <span aria-hidden="true">←</span> Все заметки
         </a>
       </footer>
     </div>
   </article>
+
+  {
+    relatedPosts.length > 0 && (
+      <section class="devlog-related" aria-labelledby="devlog-related-heading">
+        <div class="container">
+          <p class="eyebrow">Ещё почитать</p>
+          <h2 id="devlog-related-heading" class="devlog-related__title">
+            Читайте также
+          </h2>
+          <ul class="devlog-related__list">
+            {relatedPosts.map((item) => {
+              const relatedGame = item.data.game ? getGame(item.data.game) : undefined;
+
+              return (
+                <li>
+                  <a class="devlog-card" href={`/devlog/${item.id}/`}>
+                    <time class="devlog-card__date" datetime={item.data.date.toISOString()}>
+                      {formatLongDate(item.data.date)}
+                    </time>
+                    <h3 class="devlog-card__title">{item.data.title}</h3>
+                    <p class="devlog-card__summary">{item.data.summary}</p>
+                    <span class="devlog-card__foot">
+                      <span>{relatedGame ? relatedGame.title : "Читать"}</span>
+                      <span class="devlog-card__arrow" aria-hidden="true">
+                        →
+                      </span>
+                    </span>
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      </section>
+    )
+  }
 
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 </BaseLayout>
