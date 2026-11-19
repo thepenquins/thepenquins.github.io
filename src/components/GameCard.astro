@@ -1,5 +1,5 @@
 ---
-import type { Game } from "../data/games";
+import { formatLanguages, type Game } from "../data/games";
 
 interface Props {
   game: Game;
@@ -23,6 +23,8 @@ const { game, index = 0 } = Astro.props;
     game.genre,
     game.engine,
     game.platforms.join(" "),
+    game.languages.join(" "),
+    formatLanguages(game.languages),
     game.jam ?? "",
     game.credits.join(" "),
   ]

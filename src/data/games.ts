@@ -12,6 +12,8 @@ export type Game = {
   /** Движок, на котором сделана игра. Например: "Godot Engine". */
   engine: string;
   platforms: string[];
+  /** Языки интерфейса и текста: "ru", "en" и т.п. */
+  languages: string[];
   browser?: boolean;
   itchUrl: string;
   cover: string;
@@ -45,6 +47,24 @@ const shot = (slug: string, n: number, title: string): Screenshot => ({
   alt: `Скриншот из игры «${title}»`,
 });
 
+const languageNames: Record<string, string> = {
+  ru: "русский",
+  en: "английский",
+};
+
+export const getLanguageName = (code: string) => languageNames[code] ?? code;
+
+export const formatLanguages = (codes: string[]) => {
+  const names = codes.map(getLanguageName);
+
+  if (names.length === 0) return "";
+
+  return [
+    names[0].charAt(0).toUpperCase() + names[0].slice(1),
+    ...names.slice(1),
+  ].join(", ");
+};
+
 /**
  * Порядок в массиве = порядок в каталоге: сверху новые игры,
  * как в профиле penquins.itch.io. Новую игру добавляйте в начало.
@@ -62,6 +82,7 @@ export const games: Game[] = [
     ],
     genre: "Визуальная новелла",
     platforms: ["Windows"],
+    languages: ["ru"],
     itchUrl: "https://penquins.itch.io/advorkolodets",
     sourceUrl: "https://github.com/thepenquins/courtyard-project",
     cover: "/covers/advorkolodets.webp",
@@ -85,6 +106,7 @@ export const games: Game[] = [
     ],
     genre: "Экшен",
     platforms: ["Windows"],
+    languages: ["ru"],
     itchUrl: "https://penquins.itch.io/piece-of-knight",
     soundtrackUrl: "https://vk.ru/music/playlist/-221731834_17_b9f591b7d7f9899e71",
     cover: "/covers/piece-of-knight.webp",
@@ -109,6 +131,7 @@ export const games: Game[] = [
     ],
     genre: "Головоломка",
     platforms: ["Windows"],
+    languages: ["ru", "en"],
     itchUrl: "https://penquins.itch.io/absolute-brain-rot",
     cover: "/covers/absolute-brain-rot.webp",
     screenshots: [
@@ -133,6 +156,7 @@ export const games: Game[] = [
     ],
     genre: "Визуальная новелла",
     platforms: ["Windows"],
+    languages: ["ru", "en"],
     itchUrl: "https://penquins.itch.io/nibras-play-deluxe",
     vkPlayUrl: "https://vkplay.ru/play/game/nibras-play-39828",
     sourceUrl: "https://github.com/thepenquins/nibras-theater",
@@ -158,6 +182,7 @@ export const games: Game[] = [
     ],
     genre: "Ритм-игра",
     platforms: ["Браузер", "Windows"],
+    languages: ["ru", "en"],
     browser: true,
     itchUrl: "https://penquins.itch.io/shigger",
     sourceUrl: "https://github.com/thepenquins/shigger",
@@ -185,6 +210,7 @@ export const games: Game[] = [
     ],
     genre: "Выживание",
     platforms: ["Windows"],
+    languages: ["ru", "en"],
     itchUrl: "https://penquins.itch.io/bikerunner",
     cover: "/covers/bikerunner.webp",
     screenshots: [
@@ -209,6 +235,7 @@ export const games: Game[] = [
     ],
     genre: "Визуальная новелла",
     platforms: ["Windows", "Android"],
+    languages: ["ru"],
     itchUrl: "https://penquins.itch.io/insight",
     soundtrackUrl: "https://vk.ru/music/playlist/-221731834_5_21e19da93d15724e70",
     cover: "/covers/insight.webp",
@@ -232,6 +259,7 @@ export const games: Game[] = [
     ],
     genre: "Головоломка",
     platforms: ["Windows", "macOS", "Linux"],
+    languages: ["en"],
     itchUrl: "https://penquins.itch.io/night-in-the-antarctica",
     cover: "/covers/night-in-the-antarctica.webp",
     screenshots: [
@@ -256,6 +284,7 @@ export const games: Game[] = [
     ],
     genre: "Приключение",
     platforms: ["Браузер", "Windows"],
+    languages: ["ru"],
     browser: true,
     itchUrl: "https://penquins.itch.io/meta-detective",
     playUrl: "/games/meta-detective/play/",
