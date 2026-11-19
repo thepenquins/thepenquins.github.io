@@ -7,7 +7,12 @@ const title = "Игры — Penquins Software";
 const description = `Каталог игр Penquins Software: ${stats.games} проектов и ${stats.genres} жанров. Скриншоты, управление и ссылки на сборки.`;
 ---
 
-<BaseLayout title={title} description={description}>
+<BaseLayout
+  title={title}
+  description={description}
+  image="/og/games.jpg"
+  imageAlt="Все игры Penquins Software — каталог проектов"
+>
   <section class="page-hero">
     <div class="container">
       <p class="eyebrow">Каталог · {stats.games} игр</p>
