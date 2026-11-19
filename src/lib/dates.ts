@@ -28,12 +28,14 @@ const monthNamesGenitive = [
   "декабря",
 ];
 
-/** "2025-03" → "март 2025" */
+/** "2025-03" → "Март 2025" */
 export const formatMonthYear = (value: string) => {
   const [year = "", month = ""] = value.split("-");
   const name = monthNames[Number(month) - 1];
 
-  return /^\d{4}$/.test(year) && name ? `${name} ${year}` : value;
+  return /^\d{4}$/.test(year) && name
+    ? `${name.charAt(0).toUpperCase()}${name.slice(1)} ${year}`
+    : value;
 };
 
 /** Дата заметки → "17 ноября 2026" */
