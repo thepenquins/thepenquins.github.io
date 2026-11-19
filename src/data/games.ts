@@ -157,7 +157,7 @@ export const games: Game[] = [
       "Раньше все хотели в космос, а теперь — к центру Земли. Копайте вниз, ищите сыр и не забывайте вовремя кормить котиков.",
     ],
     genre: "Ритм-игра",
-    platforms: ["Браузер"],
+    platforms: ["Браузер", "Windows"],
     browser: true,
     itchUrl: "https://penquins.itch.io/shigger",
     sourceUrl: "https://github.com/thepenquins/shigger",
