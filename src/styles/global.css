@@ -2183,6 +2183,41 @@ body.is-lightbox-open {
   color: var(--muted);
 }
 
+/* ---------- Прогресс чтения заметки ---------- */
+
+.reading-progress {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 60;
+  height: 3px;
+  background: rgba(143, 227, 255, 0.07);
+  pointer-events: none;
+}
+
+.reading-progress__bar {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--ice-deep), var(--ice) 58%, var(--ice-bright));
+  box-shadow: 0 0 14px rgba(143, 227, 255, 0.45);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.reading-progress.is-active .reading-progress__bar {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reading-progress__bar {
+    transition: none;
+  }
+}
+
 .devlog-post {
   padding-block: clamp(36px, 6vw, 72px) clamp(48px, 7vw, 88px);
 }

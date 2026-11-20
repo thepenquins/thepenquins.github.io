@@ -17,6 +17,8 @@ interface Props {
   image?: string;
   imageAlt?: string;
   type?: "website" | "article";
+  /** Полоса прогресса чтения сверху страницы. */
+  readingProgress?: boolean;
 }
 
 const {
@@ -25,6 +27,7 @@ const {
   image = "/og.jpg",
   imageAlt = "Penquins Software — игры из Антарктики",
   type = "website",
+  readingProgress = false,
 } = Astro.props;
 
 const site = Astro.site ?? new URL("https://thepenquins.github.io");
@@ -74,6 +77,13 @@ const ogImage = new URL(image, site);
   </head>
   <body>
     <a class="skip-link" href="#main">Перейти к содержанию</a>
+    {
+      readingProgress && (
+        <div class="reading-progress" data-reading-progress aria-hidden="true">
+          <span class="reading-progress__bar" />
+        </div>
+      )
+    }
     <div class="page-grid" aria-hidden="true"></div>
     <Header />
     <main id="main">
